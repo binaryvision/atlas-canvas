@@ -395,14 +395,6 @@ export function MapControl({
                 ))
               }
             </Geographies>
-            {hoveredRegion ? (
-              <div className="absolute top-6 left-6 z-30 hidden sm:block">
-                <div className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/60">
-                  {hoveredRegion}
-                </div>
-              </div>
-            ) : null}
-
             {showRawPins
               ? locations.map((loc) => (
                   <Marker
@@ -502,6 +494,14 @@ export function MapControl({
           </ZoomableGroup>
         </ComposableMap>
       </div>
+
+      {hoveredRegion ? (
+        <div className="absolute top-6 left-6 z-30 hidden sm:block pointer-events-none">
+          <div className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/60">
+            {hoveredRegion}
+          </div>
+        </div>
+      ) : null}
 
       <div className="absolute top-24 left-6 z-30 hidden sm:block">
         {regionMenu}
