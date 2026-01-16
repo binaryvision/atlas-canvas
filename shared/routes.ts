@@ -1,6 +1,15 @@
-
 import { z } from 'zod';
-import { insertLocationSchema, locations } from './schema';
+import type { Location } from './data';
+
+const locationSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+  category: z.string(),
+  imageUrl: z.string().nullable(),
+}) satisfies z.ZodType<Location>;
 
 export const api = {
   locations: {
@@ -8,14 +17,14 @@ export const api = {
       method: 'GET' as const,
       path: '/api/locations',
       responses: {
-        200: z.array(z.custom<typeof locations.$inferSelect>()),
+        200: z.array(locationSchema),
       },
     },
     get: {
       method: 'GET' as const,
       path: '/api/locations/:id',
       responses: {
-        200: z.custom<typeof locations.$inferSelect>(),
+        200: locationSchema,
         404: z.object({ message: z.string() }),
       },
     },

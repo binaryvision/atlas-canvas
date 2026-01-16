@@ -1,0 +1,183 @@
+export interface Location {
+  id: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  category: string;
+  imageUrl: string | null;
+}
+
+export const locations: Location[] = [
+  {
+    id: 1,
+    name: "Kyoto, Japan",
+    description: "The cultural capital of Japan, famous for its classical Buddhist temples, as well as gardens, imperial palaces, Shinto shrines and traditional wooden houses.",
+    latitude: 35.0116,
+    longitude: 135.7681,
+    category: "culture",
+    imageUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 2,
+    name: "Santorini, Greece",
+    description: "A volcanic island in the Cyclades group of the Greek islands. It is famous for its dramatic views, stunning sunsets from Oia town, strange white aubergine (eggplant), and its very own active volcano.",
+    latitude: 36.3932,
+    longitude: 25.4615,
+    category: "nature",
+    imageUrl: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 3,
+    name: "Machu Picchu, Peru",
+    description: "A 15th-century Inca citadel, located in the Eastern Cordillera of southern Peru, on a 2,430-metre (7,970 ft) mountain ridge.",
+    latitude: -13.1631,
+    longitude: -72.5450,
+    category: "history",
+    imageUrl: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 4,
+    name: "Reykjavik, Iceland",
+    description: "The capital and largest city of Iceland. It is located in southwestern Iceland, on the southern shore of Faxaflói bay.",
+    latitude: 64.1466,
+    longitude: -21.9426,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 5,
+    name: "Cape Town, South Africa",
+    description: "A port city on South Africa's southwest coast, on a peninsula beneath the imposing Table Mountain.",
+    latitude: -33.9249,
+    longitude: 18.4241,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 6,
+    name: "Arashiyama, Japan",
+    description: "A scenic district on the western outskirts of Kyoto, known for bamboo groves and riverside vistas.",
+    latitude: 34.9855,
+    longitude: 135.5703,
+    category: "nature",
+    imageUrl: "https://images.unsplash.com/photo-1505067216369-2e6a8aa7f099?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 7,
+    name: "Gion, Kyoto",
+    description: "Kyoto's historic geisha district, lined with traditional wooden machiya houses and tea shops.",
+    latitude: 35.1189,
+    longitude: 135.9204,
+    category: "culture",
+    imageUrl: "https://images.unsplash.com/photo-1493997181344-712f2f19d87a?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 8,
+    name: "Fira, Santorini",
+    description: "Cliffside capital of Santorini with whitewashed architecture and sweeping caldera views.",
+    latitude: 36.6084,
+    longitude: 25.2357,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 9,
+    name: "Oia, Santorini",
+    description: "Iconic village perched on volcanic cliffs, famous for blue domes and sunset vistas.",
+    latitude: 36.5487,
+    longitude: 25.6729,
+    category: "culture",
+    imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 10,
+    name: "Aguas Calientes, Peru",
+    description: "Gateway town to Machu Picchu, nestled along the Urubamba River in the Andes.",
+    latitude: -13.0508,
+    longitude: -72.2159,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1459679749680-18aa1c6fe2a9?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 11,
+    name: "Sacred Valley, Peru",
+    description: "A highland valley in the Andes, dotted with Inca sites and traditional villages.",
+    latitude: -13.6124,
+    longitude: -71.7345,
+    category: "history",
+    imageUrl: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 12,
+    name: "Kopavogur, Iceland",
+    description: "A neighboring town to Reykjavik with coastal walks and geothermal pools.",
+    latitude: 64.5674,
+    longitude: -22.2176,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 13,
+    name: "Stellenbosch, South Africa",
+    description: "A university town surrounded by vineyards and Cape Dutch architecture.",
+    latitude: -33.7402,
+    longitude: 19.0528,
+    category: "culture",
+    imageUrl: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 14,
+    name: "Tokyo, Japan",
+    description: "Japan’s capital, a sprawling metropolis blending neon modernity with historic temples.",
+    latitude: 35.6764,
+    longitude: 139.6500,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 15,
+    name: "Athens, Greece",
+    description: "Ancient city known for the Acropolis, white-stone plazas, and a vibrant modern culture.",
+    latitude: 37.9838,
+    longitude: 23.7275,
+    category: "history",
+    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 16,
+    name: "Lima, Peru",
+    description: "Capital city on Peru’s Pacific coast, famed for colonial architecture and coastal cliffs.",
+    latitude: -12.0464,
+    longitude: -77.0428,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 17,
+    name: "Akureyri, Iceland",
+    description: "Northern Icelandic town known for fjord views and access to nearby waterfalls.",
+    latitude: 65.6835,
+    longitude: -18.1105,
+    category: "nature",
+    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 18,
+    name: "Johannesburg, South Africa",
+    description: "South Africa’s largest city, a major economic hub with rich cultural history.",
+    latitude: -26.2041,
+    longitude: 28.0473,
+    category: "city",
+    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
+  }
+];
+
+export function getLocation(id: number): Location | undefined {
+  return locations.find(loc => loc.id === id);
+}
+
+export function getLocations(): Location[] {
+  return locations;
+}
+

@@ -2,7 +2,7 @@
 
 ## Overview
 
-An interactive world map explorer application built with React and Express. Users can browse global locations displayed on an interactive map, select markers to view detailed information in a slide-out drawer panel. The app features elegant animations, a dark "Midnight Museum" theme, and responsive design.
+An interactive world map explorer application built with React and Vite. Users can browse global locations displayed on an interactive map, select markers to view detailed information in a slide-out drawer panel. The app features elegant animations, a dark "Midnight Museum" theme, and responsive design.
 
 ## User Preferences
 
@@ -19,46 +19,23 @@ Preferred communication style: Simple, everyday language.
 - **Animations**: Framer Motion for complex drawer and map interactions
 - **Map Rendering**: react-simple-maps with d3-geo for interactive world map visualization
 
-### Backend Architecture
-- **Runtime**: Node.js with Express
-- **Language**: TypeScript with ES modules
-- **API Design**: RESTful endpoints defined in shared routes module with Zod validation
-- **Build Process**: Custom build script using esbuild for server bundling, Vite for client
-
-### Data Storage
-- **Database**: PostgreSQL with Drizzle ORM
-- **Schema**: Single `locations` table with fields for id, name, description, coordinates, category, and image URL
-- **Migrations**: Drizzle Kit for schema management (`db:push` command)
-
 ### Project Structure
 ```
-├── client/          # React frontend
-│   └── src/
-│       ├── components/   # UI components including MapControl, InfoDrawer, Pin
-│       ├── hooks/        # Custom hooks for locations data fetching
-│       ├── pages/        # Page components (Home, not-found)
-│       └── lib/          # Utilities and query client
-├── server/          # Express backend
-│   ├── routes.ts    # API route handlers
-│   ├── storage.ts   # Database access layer
-│   └── db.ts        # Database connection
-├── shared/          # Shared code between client/server
-│   ├── schema.ts    # Drizzle database schema
-│   └── routes.ts    # API route definitions with Zod schemas
-└── migrations/      # Database migrations
+├── src/             # React source
+│   ├── components/  # UI components including MapControl, InfoDrawer, Pin
+│   ├── hooks/       # Custom hooks for locations data fetching
+│   ├── pages/       # Page components (Home, not-found)
+│   └── lib/         # Utilities
+├── shared/          # Shared data/types for the demo
+├── public/          # Static assets
+└── index.html       # Vite entry HTML
 ```
 
 ### Key Design Patterns
-- **Shared Types**: Database schema and API contracts shared between frontend and backend via `@shared` path alias
-- **Storage Interface**: Abstract `IStorage` interface in server for database operations, enabling testability
-- **Type-safe API**: Zod schemas define response types, parsed on both client and server
+- **Shared Types**: Demo data and types shared via the `@shared` path alias
 - **Component Composition**: UI built from atomic shadcn/ui components with Radix primitives
 
 ## External Dependencies
-
-### Database
-- **PostgreSQL**: Primary data store, connection via `DATABASE_URL` environment variable
-- **Drizzle ORM**: Type-safe database queries and schema management
 
 ### Frontend Libraries
 - **react-simple-maps**: SVG map rendering wrapper for d3-geo
@@ -68,7 +45,6 @@ Preferred communication style: Simple, everyday language.
 
 ### Build & Development
 - **Vite**: Frontend development server with HMR
-- **esbuild**: Server-side bundling for production
 - **Replit plugins**: Development banner and cartographer for Replit environment
 
 ### External Data
