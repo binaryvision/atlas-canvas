@@ -180,8 +180,6 @@ export function MapControl({
     [defaultPosition]
   );
 
-  const gridOpacity = Math.min(0.35, Math.max(0, (livePosition.zoom - 1.2) / 3));
-
   useGSAP(
     () => {
       if (mapRef.current) {
@@ -366,10 +364,9 @@ export function MapControl({
             ]}
           >
             <Graticule
-              stroke="rgba(91, 127, 163, 0.35)"
+              stroke="rgba(91, 127, 163, 0.25)"
               strokeWidth={0.5}
-              opacity={gridOpacity}
-              className="transition-opacity duration-1000"
+              vectorEffect="non-scaling-stroke"
             />
 
             <Geographies geography={geoUrl}>

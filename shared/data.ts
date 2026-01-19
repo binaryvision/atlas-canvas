@@ -1,3 +1,34 @@
+export interface ExpandedContent {
+  heroVideo?: string;
+  heroImage?: string;
+  overview: string;
+  stats: {
+    label: string;
+    value: string;
+    trend?: "up" | "down" | "neutral";
+  }[];
+  timeline: {
+    date: string;
+    title: string;
+    description: string;
+  }[];
+  gallery: {
+    type: "image" | "video";
+    url: string;
+    caption: string;
+  }[];
+  team: {
+    name: string;
+    role: string;
+    avatar: string;
+  }[];
+  documents: {
+    title: string;
+    type: string;
+    size: string;
+  }[];
+}
+
 export interface Location {
   id: number;
   name: string;
@@ -6,6 +37,7 @@ export interface Location {
   longitude: number;
   category: string;
   imageUrl: string | null;
+  expandedContent?: ExpandedContent;
 }
 
 export const locations: Location[] = [
@@ -129,7 +161,7 @@ export const locations: Location[] = [
   {
     id: 14,
     name: "Tokyo, Japan",
-    description: "Japan’s capital, a sprawling metropolis blending neon modernity with historic temples.",
+    description: "Japan's capital, a sprawling metropolis blending neon modernity with historic temples.",
     latitude: 35.6764,
     longitude: 139.6500,
     category: "city",
@@ -147,7 +179,7 @@ export const locations: Location[] = [
   {
     id: 16,
     name: "Lima, Peru",
-    description: "Capital city on Peru’s Pacific coast, famed for colonial architecture and coastal cliffs.",
+    description: "Capital city on Peru's Pacific coast, famed for colonial architecture and coastal cliffs.",
     latitude: -12.0464,
     longitude: -77.0428,
     category: "city",
@@ -165,11 +197,95 @@ export const locations: Location[] = [
   {
     id: 18,
     name: "Johannesburg, South Africa",
-    description: "South Africa’s largest city, a major economic hub with rich cultural history.",
+    description: "South Africa's largest city, a major economic hub with rich cultural history.",
     latitude: -26.2041,
     longitude: 28.0473,
     category: "city",
-    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80",
+    expandedContent: {
+      heroVideo: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?auto=format&fit=crop&q=80",
+      heroImage: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?auto=format&fit=crop&q=80",
+      overview: "Operation Johannesburg represents our flagship initiative in the African continent. This multi-phase deployment has established critical infrastructure across the greater Gauteng region, enabling unprecedented data collection and analysis capabilities. The operation leverages local partnerships and cutting-edge technology to achieve strategic objectives while maintaining complete operational security.",
+      stats: [
+        { label: "Active Sensors", value: "2,847", trend: "up" },
+        { label: "Data Points / Day", value: "14.2M", trend: "up" },
+        { label: "Coverage Area", value: "1,645 km²", trend: "neutral" },
+        { label: "Uptime", value: "99.97%", trend: "up" },
+        { label: "Response Time", value: "12ms", trend: "down" },
+        { label: "Team Members", value: "34", trend: "neutral" }
+      ],
+      timeline: [
+        {
+          date: "2024-01",
+          title: "Initial Reconnaissance",
+          description: "Ground team deployed for preliminary assessment and site surveys across key locations in Johannesburg CBD and surrounding areas."
+        },
+        {
+          date: "2024-03",
+          title: "Infrastructure Phase",
+          description: "Primary network nodes established. Secure communications backbone deployed with redundant failover systems."
+        },
+        {
+          date: "2024-06",
+          title: "Sensor Deployment",
+          description: "First wave of monitoring equipment installed across 47 strategic locations. Real-time data feeds established."
+        },
+        {
+          date: "2024-09",
+          title: "Full Operational Capacity",
+          description: "Operation reached 100% planned capacity. All systems nominal. Continuous monitoring and analysis initiated."
+        },
+        {
+          date: "2025-01",
+          title: "Phase 2 Expansion",
+          description: "Extended coverage to Pretoria corridor. Additional 800 sensors deployed. AI-driven anomaly detection activated."
+        }
+      ],
+      gallery: [
+        {
+          type: "image",
+          url: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?auto=format&fit=crop&q=80",
+          caption: "Johannesburg skyline from operations center"
+        },
+        {
+          type: "image",
+          url: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80",
+          caption: "Network infrastructure installation"
+        },
+        {
+          type: "video",
+          url: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80",
+          caption: "Aerial survey footage - restricted"
+        },
+        {
+          type: "image",
+          url: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&q=80",
+          caption: "Field team deployment"
+        },
+        {
+          type: "image",
+          url: "https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?auto=format&fit=crop&q=80",
+          caption: "Sensor array installation"
+        },
+        {
+          type: "image",
+          url: "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&q=80",
+          caption: "Operations center interior"
+        }
+      ],
+      team: [
+        { name: "Sarah Chen", role: "Operations Lead", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100" },
+        { name: "Marcus Webb", role: "Field Director", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" },
+        { name: "Anika Patel", role: "Data Analyst", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100" },
+        { name: "James Okonkwo", role: "Local Liaison", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100" }
+      ],
+      documents: [
+        { title: "Operational Brief Q4 2024", type: "PDF", size: "2.4 MB" },
+        { title: "Sensor Network Topology", type: "PDF", size: "8.1 MB" },
+        { title: "Risk Assessment Report", type: "PDF", size: "1.2 MB" },
+        { title: "Field Operations Manual", type: "PDF", size: "15.7 MB" }
+      ]
+    }
   }
 ];
 
@@ -180,4 +296,3 @@ export function getLocation(id: number): Location | undefined {
 export function getLocations(): Location[] {
   return locations;
 }
-

@@ -2,7 +2,8 @@ import { useLocation } from "@/hooks/use-locations";
 import { motion } from "@/lib/motion";
 import gsap from "gsap";
 import { MapPin, Radar as RadarIcon, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { OperationModal } from "./OperationModal";
 
 interface InfoDrawerProps {
   locationId: number | null;
@@ -14,12 +15,26 @@ export function InfoDrawer({ locationId, onClose }: InfoDrawerProps) {
     locationId
   );
   const [isOpen, setIsOpen] = useState(Boolean(locationId));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalSourceRect, setModalSourceRect] = useState<DOMRect | null>(null);
   const location = useLocation(displayedLocationId);
 
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const radarRef = useRef<HTMLDivElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+
+  const handleOpenOperation = useCallback(() => {
+    if (panelRef.current) {
+      setModalSourceRect(panelRef.current.getBoundingClientRect());
+    }
+    setIsModalOpen(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
 
   const animatePanelIn = () => {
     if (!panelRef.current) return;
@@ -217,12 +232,33 @@ export function InfoDrawer({ locationId, onClose }: InfoDrawerProps) {
               </div>
             </div>
 
-            <button className="w-full rounded-xl border border-primary/40 bg-primary/15 py-3 text-sm uppercase tracking-[0.3em] text-white font-medium hover:bg-primary/25 hover:border-primary/60 transition-colors">
-              Open Operation
-            </button>
+            {location.expandedContent ? (
+              <button
+                ref={openButtonRef}
+                onClick={handleOpenOperation}
+                className="w-full rounded-xl border border-accent/40 bg-accent/15 py-3 text-sm uppercase tracking-[0.3em] text-white font-medium hover:bg-accent/25 hover:border-accent/60 transition-colors"
+              >
+                Open Operation
+              </button>
+            ) : (
+              <button className="w-full rounded-xl border border-primary/40 bg-primary/15 py-3 text-sm uppercase tracking-[0.3em] text-white font-medium hover:bg-primary/25 hover:border-primary/60 transition-colors">
+                Open Operation
+              </button>
+            )}
           </div>
         )}
       </div>
+
+      {/* Operation Modal */}
+      {location?.expandedContent && (
+        <OperationModal
+          location={location}
+          content={location.expandedContent}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          sourceRect={modalSourceRect}
+        />
+      )}
     </div>
   );
 }

@@ -29,9 +29,7 @@ export function RegionMenu({
       <div className={isMobile ? "flex flex-col-reverse" : "flex flex-col"}>
         <button
           onClick={onToggle}
-          className={`w-full flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-primary font-medium px-2 ${
-            isMobile ? "pt-2" : "pb-2"
-          }`}
+          className={`w-full flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-primary font-medium px-2`}
           aria-expanded={isOpen}
           aria-label="Toggle regions menu"
         >
@@ -39,11 +37,13 @@ export function RegionMenu({
           {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
         <div
-          className={`flex flex-col gap-2 overflow-hidden transition-all duration-300 ${
+          className={`overflow-hidden transition-all duration-300 ${
             isOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
           }`}
+          
           {...{ inert: !isOpen ? 'true' : undefined }}
         >
+          <div className={`flex flex-col gap-2 ${isMobile ? "pb-2" : "pt-4"}`}>
           {regions.map((region) => (
             <button
               key={region.id}
@@ -57,6 +57,7 @@ export function RegionMenu({
               {region.label}
             </button>
           ))}
+          </div>
         </div>
       </div>
     </div>
