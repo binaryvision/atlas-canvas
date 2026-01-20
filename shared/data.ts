@@ -40,6 +40,17 @@ export interface Location {
   expandedContent?: ExpandedContent;
 }
 
+export interface SpaceOperation {
+  id: number;
+  name: string;
+  description: string;
+  orbitType: "LEO" | "MEO" | "GEO" | "HEO" | "Lunar" | "Deep Space";
+  altitude: string;
+  category: string;
+  imageUrl: string | null;
+  expandedContent?: ExpandedContent;
+}
+
 export const locations: Location[] = [
   {
     id: 1,
@@ -295,4 +306,99 @@ export function getLocation(id: number): Location | undefined {
 
 export function getLocations(): Location[] {
   return locations;
+}
+
+export const spaceOperations: SpaceOperation[] = [
+  {
+    id: 1001,
+    name: "SENTINEL-7",
+    description: "Advanced Earth observation satellite providing real-time imagery and environmental monitoring across global hotspots. Equipped with multi-spectral sensors and synthetic aperture radar.",
+    orbitType: "LEO",
+    altitude: "512 km",
+    category: "reconnaissance",
+    imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80",
+    expandedContent: {
+      heroImage: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80",
+      overview: "SENTINEL-7 represents our most advanced orbital reconnaissance platform. Operating in low Earth orbit, this satellite provides continuous coverage of strategic regions with sub-meter resolution imaging capabilities. The platform integrates AI-driven anomaly detection for automated alerts.",
+      stats: [
+        { label: "Orbital Period", value: "94.6 min", trend: "neutral" },
+        { label: "Coverage/Day", value: "12.4M km²", trend: "up" },
+        { label: "Image Resolution", value: "0.3m", trend: "neutral" },
+        { label: "Data Downlink", value: "1.2 Gbps", trend: "up" },
+        { label: "Mission Duration", value: "847 days", trend: "up" },
+        { label: "Fuel Remaining", value: "72%", trend: "down" }
+      ],
+      timeline: [
+        { date: "2023-06", title: "Launch", description: "Successfully deployed from Vandenberg SFB aboard Falcon 9." },
+        { date: "2023-07", title: "Commissioning", description: "All systems nominal. Began operational imaging campaign." },
+        { date: "2024-03", title: "Software Update", description: "AI detection algorithms upgraded with 40% improved accuracy." },
+        { date: "2025-01", title: "Extended Mission", description: "Mission extended 3 years based on exceptional performance." }
+      ],
+      gallery: [
+        { type: "image", url: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80", caption: "SENTINEL-7 in orbit" },
+        { type: "image", url: "https://images.unsplash.com/photo-1457364887197-9150188c107b?auto=format&fit=crop&q=80", caption: "Launch sequence" }
+      ],
+      team: [
+        { name: "Dr. Elena Vasquez", role: "Mission Director", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100" },
+        { name: "Col. James Wright", role: "Operations Lead", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" }
+      ],
+      documents: [
+        { title: "Mission Status Report", type: "PDF", size: "3.2 MB" },
+        { title: "Orbital Parameters", type: "PDF", size: "1.1 MB" }
+      ]
+    }
+  },
+  {
+    id: 1002,
+    name: "ARTEMIS RELAY",
+    description: "Deep space communications relay supporting lunar operations and beyond. Provides critical data links for crewed and uncrewed missions in cislunar space.",
+    orbitType: "Lunar",
+    altitude: "384,400 km",
+    category: "communications",
+    imageUrl: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 1003,
+    name: "HAWKEYE-3",
+    description: "Geostationary signals intelligence platform providing persistent coverage over areas of strategic interest. Advanced SIGINT and ELINT capabilities.",
+    orbitType: "GEO",
+    altitude: "35,786 km",
+    category: "intelligence",
+    imageUrl: "https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 1004,
+    name: "NAVIGATOR CONSTELLATION",
+    description: "Network of 24 satellites providing enhanced positioning, navigation, and timing services with military-grade encryption and anti-jamming capabilities.",
+    orbitType: "MEO",
+    altitude: "20,200 km",
+    category: "navigation",
+    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 1005,
+    name: "AURORA STATION",
+    description: "Classified orbital research platform conducting advanced materials science and observation experiments. Crew rotation every 90 days.",
+    orbitType: "LEO",
+    altitude: "408 km",
+    category: "research",
+    imageUrl: "https://images.unsplash.com/photo-1454789548928-9efd52dc4031?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 1006,
+    name: "DEEP WATCH",
+    description: "Space-based infrared early warning satellite detecting missile launches and tracking objects in Earth orbit. Critical component of strategic defense.",
+    orbitType: "HEO",
+    altitude: "39,000 km apogee",
+    category: "defense",
+    imageUrl: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80"
+  }
+];
+
+export function getSpaceOperation(id: number): SpaceOperation | undefined {
+  return spaceOperations.find(op => op.id === id);
+}
+
+export function getSpaceOperations(): SpaceOperation[] {
+  return spaceOperations;
 }

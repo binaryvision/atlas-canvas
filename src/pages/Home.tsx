@@ -1,4 +1,5 @@
 import { InfoDrawer } from "@/components/InfoDrawer";
+import { SpaceInfoDrawer } from "@/components/SpaceInfoDrawer";
 import { MapControl } from "@/components/MapControl";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -8,6 +9,9 @@ gsap.registerPlugin(useGSAP);
 
 export default function Home() {
   const [selectedLocationId, setSelectedLocationId] = useState<number | null>(
+    null
+  );
+  const [selectedSpaceOperationId, setSelectedSpaceOperationId] = useState<number | null>(
     null
   );
   const [resetViewToken, setResetViewToken] = useState(0);
@@ -52,15 +56,25 @@ export default function Home() {
         <MapControl
           onLocationSelect={setSelectedLocationId}
           selectedLocationId={selectedLocationId}
+          onSpaceOperationSelect={setSelectedSpaceOperationId}
+          selectedSpaceOperationId={selectedSpaceOperationId}
           resetViewToken={resetViewToken}
         />
       </div>
 
-      {/* Info Drawer - Overlays on small screens, pushes content or overlays on large */}
+      {/* Info Drawer - For ground operations */}
       <InfoDrawer
         locationId={selectedLocationId}
         onClose={() => {
           setSelectedLocationId(null);
+        }}
+      />
+
+      {/* Space Info Drawer - For space operations */}
+      <SpaceInfoDrawer
+        operationId={selectedSpaceOperationId}
+        onClose={() => {
+          setSelectedSpaceOperationId(null);
         }}
       />
 
