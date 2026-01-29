@@ -41,7 +41,7 @@ function OrbitRing({
 
   useGSAP(() => {
     if (!ringRef.current) return;
-    
+
     // Animate ring expanding outward
     gsap.fromTo(
       ringRef.current,
@@ -71,7 +71,7 @@ function OrbitRing({
         strokeWidth={1}
         strokeDasharray="6 4"
       />
-      
+
       {/* Orbit label */}
       <text
         x={centerX}
@@ -123,7 +123,7 @@ function SpacePin({ x, y, operation, isSelected, onClick, delay }: SpacePinProps
 
   useGSAP(() => {
     if (!pinRef.current) return;
-    
+
     gsap.fromTo(
       pinRef.current,
       { opacity: 0 },
@@ -170,7 +170,7 @@ function SpacePin({ x, y, operation, isSelected, onClick, delay }: SpacePinProps
     >
       {/* Hit area */}
       <circle cx={x} cy={y} r={size * 2.5} fill="transparent" />
-      
+
       {/* Focus ring - visible only on keyboard focus */}
       <circle
         cx={x}
@@ -182,7 +182,7 @@ function SpacePin({ x, y, operation, isSelected, onClick, delay }: SpacePinProps
         strokeDasharray="4 2"
         className="space-pin-focus-ring"
       />
-      
+
       {/* Glow */}
       <circle
         cx={x}
@@ -191,7 +191,7 @@ function SpacePin({ x, y, operation, isSelected, onClick, delay }: SpacePinProps
         fill={isSelected ? "rgba(255, 255, 255, 0.5)" : colors.glow}
         style={{ filter: "blur(6px)" }}
       />
-      
+
       {/* Main pin */}
       <circle
         cx={x}
@@ -201,7 +201,7 @@ function SpacePin({ x, y, operation, isSelected, onClick, delay }: SpacePinProps
         stroke={isSelected ? "#ffffff" : "rgba(255,255,255,0.3)"}
         strokeWidth={2}
       />
-      
+
       {/* Inner highlight */}
       <circle
         cx={x}
@@ -254,23 +254,23 @@ export function SpaceOverlay({
   const svgContainerRef = useRef<SVGSVGElement>(null);
   const ringsRef = useRef<SVGGElement>(null);
   const spaceOperations = useSpaceOperations();
-  
+
   // Track if we should render (stays true during exit animation)
   const [shouldRender, setShouldRender] = useState(false);
   const isAnimatingRef = useRef(false);
   const hasAnimatedIn = useRef(false);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Desktop: center in middle of viewport for full circles
   const centerX = mapWidth / 2;
   const centerY = mapHeight / 2;
-  
+
   // Calculate ring sizes based on viewport
   const padding = 80;
   const maxRadius = Math.min(mapWidth, mapHeight) / 2 - padding;
   const minRadius = 60;
-  
+
   // Group operations by orbit type
   const operationsByOrbit = useMemo(() => {
     const groups: Record<string, SpaceOperation[]> = {
@@ -281,13 +281,13 @@ export function SpaceOverlay({
       Lunar: [],
       "Deep Space": [],
     };
-    
+
     spaceOperations.forEach((op) => {
       if (groups[op.orbitType]) {
         groups[op.orbitType].push(op);
       }
     });
-    
+
     return groups;
   }, [spaceOperations]);
 
@@ -295,8 +295,8 @@ export function SpaceOverlay({
   const activeOrbitTypes = ["LEO", "MEO", "GEO", "HEO", "Lunar"].filter(
     type => operationsByOrbit[type].length > 0
   );
-  
-  const ringSpacing = activeOrbitTypes.length > 1 
+
+  const ringSpacing = activeOrbitTypes.length > 1
     ? (maxRadius - minRadius) / (activeOrbitTypes.length - 1)
     : 0;
 
@@ -316,7 +316,7 @@ export function SpaceOverlay({
       const x = Math.sin(seed + i * 9999) * 10000;
       return x - Math.floor(x);
     };
-    
+
     return Array.from({ length: 60 }).map((_, i) => ({
       x: seededRandom(i * 3) * mapWidth,
       y: seededRandom(i * 3 + 1) * mapHeight,
@@ -328,16 +328,16 @@ export function SpaceOverlay({
   // Handle enter animation
   const animateIn = useCallback(() => {
     if (!animationContainerRef.current || isAnimatingRef.current || hasAnimatedIn.current) return;
-    
+
     isAnimatingRef.current = true;
     hasAnimatedIn.current = true;
-    
+
     const tl = gsap.timeline({
       onComplete: () => {
         isAnimatingRef.current = false;
       },
     });
-    
+
     // Fade in container
     tl.fromTo(
       animationContainerRef.current,
@@ -345,7 +345,7 @@ export function SpaceOverlay({
       { opacity: 1, duration: motion.duration.base, ease: motion.ease.out },
       0
     );
-    
+
     // Animate rings expanding from center (desktop only)
     if (ringsRef.current && !isMobile) {
       tl.fromTo(
@@ -360,9 +360,9 @@ export function SpaceOverlay({
   // Handle exit animation
   const animateOut = useCallback(() => {
     if (!animationContainerRef.current || isAnimatingRef.current) return;
-    
+
     isAnimatingRef.current = true;
-    
+
     const tl = gsap.timeline({
       onComplete: () => {
         setShouldRender(false);
@@ -370,7 +370,7 @@ export function SpaceOverlay({
         hasAnimatedIn.current = false;
       },
     });
-    
+
     // Animate rings collapsing to center (desktop only)
     if (ringsRef.current && !isMobile) {
       tl.to(
@@ -379,7 +379,7 @@ export function SpaceOverlay({
         0
       );
     }
-    
+
     // Fade out container
     tl.to(
       animationContainerRef.current,
@@ -422,7 +422,7 @@ export function SpaceOverlay({
           returnFocusOnDeactivate: true,
         }}
       >
-        <div 
+        <div
           ref={containerRef}
           role="dialog"
           aria-modal="true"
@@ -436,26 +436,27 @@ export function SpaceOverlay({
             onToggle={onClose}
             operationCount={spaceOperations.length}
           />
-          
-          <div 
+
+          <div
             ref={animationContainerRef}
-            className="absolute inset-0 flex flex-col"
+            className="absolute inset-0 flex flex-col z-10"
             style={{ pointerEvents: "none" }}
           >
             {/* Dark overlay backdrop */}
-            <div 
+            <div
               className="absolute inset-0 bg-[#050a12]/85"
               style={{ pointerEvents: "all" }}
               onClick={onClose}
             />
-            
-            {/* Scrollable list */}
-            <div 
-              className="relative flex-1 overflow-y-auto pt-16 pb-24 px-4"
-              style={{ pointerEvents: "all" }}
-              onClick={(e) => e.stopPropagation()}
+
+            {/* Scrollable list - pointer-events only on content so button area stays clickable */}
+            <div
+              className="relative flex-1 overflow-y-auto pt-16 pb-24 px-4 pointer-events-none"
             >
-              <div className="space-y-3">
+              <div
+                className="space-y-3 pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {spaceOperations.map((op, index) => (
                   <MobileSpaceCard
                     key={op.id}
@@ -484,7 +485,7 @@ export function SpaceOverlay({
         returnFocusOnDeactivate: true,
       }}
     >
-      <div 
+      <div
         ref={containerRef}
         role="dialog"
         aria-modal="true"
@@ -498,80 +499,80 @@ export function SpaceOverlay({
           onToggle={onClose}
           operationCount={spaceOperations.length}
         />
-        
+
         <div ref={animationContainerRef} className="absolute inset-0" style={{ pointerEvents: "none" }}>
-          <svg 
+          <svg
             ref={svgContainerRef}
-            width={mapWidth} 
-            height={mapHeight} 
-            className="absolute inset-0"
-          >
-          {/* Dark overlay to dim the map */}
-          <rect
-            x={0}
-            y={0}
             width={mapWidth}
             height={mapHeight}
-            fill="rgba(5, 10, 18, 0.75)"
-            style={{ pointerEvents: "all" }}
-            onClick={onClose}
-          />
+            className="absolute inset-0"
+          >
+            {/* Dark overlay to dim the map */}
+            <rect
+              x={0}
+              y={0}
+              width={mapWidth}
+              height={mapHeight}
+              fill="rgba(5, 10, 18, 0.75)"
+              style={{ pointerEvents: "all" }}
+              onClick={onClose}
+            />
 
-          {/* Subtle stars */}
-          {stars.map((star, i) => (
-            <circle
-              key={i}
-              cx={star.x}
-              cy={star.y}
-              r={star.size}
-              fill={`rgba(255, 255, 255, ${star.opacity})`}
-            />
-          ))}
-
-          {/* Center crosshair / reference point */}
-          <g opacity={0.3}>
-            <line
-              x1={centerX - 20}
-              y1={centerY}
-              x2={centerX + 20}
-              y2={centerY}
-              stroke="rgba(91, 163, 220, 0.5)"
-              strokeWidth={1}
-            />
-            <line
-              x1={centerX}
-              y1={centerY - 20}
-              x2={centerX}
-              y2={centerY + 20}
-              stroke="rgba(91, 163, 220, 0.5)"
-              strokeWidth={1}
-            />
-            <circle
-              cx={centerX}
-              cy={centerY}
-              r={8}
-              fill="none"
-              stroke="rgba(91, 163, 220, 0.4)"
-              strokeWidth={1}
-            />
-          </g>
-
-          {/* Orbit rings with operations */}
-          <g ref={ringsRef} style={{ transformOrigin: `${centerX}px ${centerY}px` }}>
-            {orbitRings.map((ring, index) => (
-              <OrbitRing
-                key={ring.type}
-                operations={ring.operations}
-                radius={ring.radius}
-                label={ring.label}
-                centerX={centerX}
-                centerY={centerY}
-                selectedId={selectedOperationId}
-                onSelect={onOperationSelect}
-                delay={0.15 + index * 0.08}
+            {/* Subtle stars */}
+            {stars.map((star, i) => (
+              <circle
+                key={i}
+                cx={star.x}
+                cy={star.y}
+                r={star.size}
+                fill={`rgba(255, 255, 255, ${star.opacity})`}
               />
             ))}
-          </g>
+
+            {/* Center crosshair / reference point */}
+            <g opacity={0.3}>
+              <line
+                x1={centerX - 20}
+                y1={centerY}
+                x2={centerX + 20}
+                y2={centerY}
+                stroke="rgba(91, 163, 220, 0.5)"
+                strokeWidth={1}
+              />
+              <line
+                x1={centerX}
+                y1={centerY - 20}
+                x2={centerX}
+                y2={centerY + 20}
+                stroke="rgba(91, 163, 220, 0.5)"
+                strokeWidth={1}
+              />
+              <circle
+                cx={centerX}
+                cy={centerY}
+                r={8}
+                fill="none"
+                stroke="rgba(91, 163, 220, 0.4)"
+                strokeWidth={1}
+              />
+            </g>
+
+            {/* Orbit rings with operations */}
+            <g ref={ringsRef} style={{ transformOrigin: `${centerX}px ${centerY}px` }}>
+              {orbitRings.map((ring, index) => (
+                <OrbitRing
+                  key={ring.type}
+                  operations={ring.operations}
+                  radius={ring.radius}
+                  label={ring.label}
+                  centerX={centerX}
+                  centerY={centerY}
+                  selectedId={selectedOperationId}
+                  onSelect={onOperationSelect}
+                  delay={0.15 + index * 0.08}
+                />
+              ))}
+            </g>
           </svg>
         </div>
       </div>
@@ -610,7 +611,7 @@ function MobileSpaceCard({ operation, isSelected, onClick, delay }: MobileSpaceC
 
   useGSAP(() => {
     if (!cardRef.current) return;
-    
+
     gsap.fromTo(
       cardRef.current,
       { opacity: 0, y: 20 },
@@ -633,9 +634,8 @@ function MobileSpaceCard({ operation, isSelected, onClick, delay }: MobileSpaceC
       onClick={onClick}
       className={`
         w-full text-left p-4 rounded-xl border backdrop-blur-sm
-        transition-all duration-200
-        ${isSelected 
-          ? 'bg-white/10 border-white/30 ring-1 ring-white/20' 
+        ${isSelected
+          ? 'bg-white/10 border-white/30 ring-1 ring-white/20'
           : 'bg-[#141e2d]/60 border-primary/20 hover:bg-[#1c2a3d]/60 hover:border-primary/40'
         }
       `}
@@ -643,16 +643,16 @@ function MobileSpaceCard({ operation, isSelected, onClick, delay }: MobileSpaceC
     >
       <div className="flex items-start gap-3">
         {/* Category dot */}
-        <div className={`w-3 h-3 rounded-full mt-1 ${dotClass} shadow-lg`} 
-          style={{ boxShadow: `0 0 8px currentColor` }} 
+        <div className={`w-3 h-3 rounded-full mt-1 ${dotClass} shadow-lg`}
+          style={{ boxShadow: `0 0 8px currentColor` }}
         />
-        
+
         <div className="flex-1 min-w-0">
           {/* Name */}
           <div className="font-medium text-white text-sm mb-1">
             {operation.name}
           </div>
-          
+
           {/* Metadata row */}
           <div className="flex items-center gap-2 text-xs text-white/60">
             <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider ${colorClass}`}>
@@ -666,14 +666,14 @@ function MobileSpaceCard({ operation, isSelected, onClick, delay }: MobileSpaceC
         </div>
 
         {/* Chevron */}
-        <svg 
-          width="16" 
-          height="16" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
           strokeLinejoin="round"
           className={`text-white/40 transition-colors ${isSelected ? 'text-white/80' : ''}`}
         >
@@ -696,12 +696,12 @@ function SpaceTriggerButton({ isActive, onToggle, operationCount }: SpaceTrigger
     <button
       onClick={onToggle}
       className={`
-        absolute top-0 left-1/2 -translate-x-1/2 z-40
+        absolute top-0 left-1/2 -translate-x-1/2 z-40 pointer-events-auto
         flex items-center gap-2 px-4 py-2 pt-3
         rounded-b-xl border border-t-0
         transition-all duration-300 ease-out
-        ${isActive 
-          ? 'bg-primary/30 border-primary/50 text-white' 
+        ${isActive
+          ? 'bg-primary/30 border-primary/50 text-white'
           : 'bg-[#141e2d]/80 border-primary/30 text-white/80 hover:bg-[#1c2a3d]/90 hover:border-primary/50 hover:text-white'
         }
       `}
@@ -709,14 +709,14 @@ function SpaceTriggerButton({ isActive, onToggle, operationCount }: SpaceTrigger
       aria-expanded={isActive}
     >
       {/* Satellite icon */}
-      <svg 
-        width="16" 
-        height="16" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
         strokeLinejoin="round"
         className={`transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`}
       >
@@ -726,33 +726,33 @@ function SpaceTriggerButton({ isActive, onToggle, operationCount }: SpaceTrigger
         <path d="m16 8 3-3" />
         <path d="M9 21a6 6 0 0 0-6-6" />
       </svg>
-      
+
       <span className="text-xs uppercase tracking-[0.15em] font-medium">
         Space Ops
       </span>
-      
+
       {/* Count badge */}
       <span className={`
         min-w-[18px] h-[18px] px-1 
         flex items-center justify-center 
         rounded-full text-[10px] font-semibold
-        ${isActive 
-          ? 'bg-white/20 text-white' 
+        ${isActive
+          ? 'bg-white/20 text-white'
           : 'bg-primary/40 text-white/90'
         }
       `}>
         {operationCount}
       </span>
-      
+
       {/* Pull indicator arrow */}
-      <svg 
-        width="10" 
-        height="10" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
+      <svg
+        width="10"
+        height="10"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
         strokeLinejoin="round"
         className={`transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`}
       >
@@ -776,7 +776,7 @@ export function SpaceTrigger({ isActive, onToggle, operationCount }: SpaceTrigge
     // Don't render - the button will be inside SpaceOverlay
     return null;
   }
-  
+
   return (
     <SpaceTriggerButton
       isActive={isActive}

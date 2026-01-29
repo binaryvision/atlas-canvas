@@ -61,7 +61,7 @@ export function MapControl({
   const mapSize = useMapSize(containerRef);
   const mapWidth = mapSize.width || 800;
   const mapHeight = mapSize.height || 450;
-  
+
   // Calculate minimum zoom to ensure the full map fits in the viewport
   // The base projection scale is 140, which at zoom 1 fits well in ~800px width
   // For narrower viewports, we need to allow zooming out further
@@ -107,13 +107,13 @@ export function MapControl({
   const [location, setLocation] = useLocation();
   const expectedSearchRef = useRef<string | null>(null);
   const searchBarRef = useRef<SearchBarHandle>(null);
-  
+
   // Get unique categories from locations (needed early for URL parsing)
   const categories = useMemo(() => {
     const uniqueCategories = new Set(locations.map((loc) => loc.category));
     return Array.from(uniqueCategories).sort();
   }, [locations]);
-  
+
   // Parse search query and category from URL
   const getSearchFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
@@ -150,20 +150,20 @@ export function MapControl({
 
     // Mark what we expect the URL to be
     expectedSearchRef.current = newSearchValue;
-    
+
     const url = new URL(window.location.href);
     if (newSearchValue) {
       url.searchParams.set("search", newSearchValue);
     } else {
       url.searchParams.delete("search");
     }
-    
+
     if (selectedCategory) {
       url.searchParams.set("category", selectedCategory);
     } else {
       url.searchParams.delete("category");
     }
-    
+
     const newUrl = url.pathname + (url.search ? url.search : "");
     setLocation(newUrl, { replace: true });
   }, [searchQuery, selectedCategory, setLocation, categories]);
@@ -173,7 +173,7 @@ export function MapControl({
   useEffect(() => {
     const urlSearch = getSearchFromUrl();
     const urlCategory = getCategoryFromUrl();
-    
+
     // If this is the search value we just set, ignore it
     if (expectedSearchRef.current !== null && urlSearch === expectedSearchRef.current) {
       expectedSearchRef.current = null;
@@ -189,7 +189,7 @@ export function MapControl({
       expectedSearchRef.current = null;
       setSearchQuery(urlSearch);
     }
-    
+
     if (urlCategory !== selectedCategory) {
       setSelectedCategory(urlCategory);
     }
@@ -307,7 +307,7 @@ export function MapControl({
     // Calculate bounding box for filtered locations
     const lngs = filteredLocations.map((loc) => loc.longitude);
     const lats = filteredLocations.map((loc) => loc.latitude);
-    
+
     const minLng = Math.min(...lngs);
     const maxLng = Math.max(...lngs);
     const minLat = Math.min(...lats);
@@ -329,12 +329,12 @@ export function MapControl({
     // Calculate required zoom level to fit the bounds
     const lngRange = paddedMaxLng - paddedMinLng;
     const latRange = paddedMaxLat - paddedMinLat;
-    
+
     // Estimate zoom based on the larger dimension
     const lngZoom = (360 / lngRange) * (mapWidth / 800);
     const latZoom = (170 / latRange) * (mapHeight / 450);
     const estimatedZoom = Math.min(lngZoom, latZoom, 6); // Cap at zoom 6
-    
+
     // Use a reasonable zoom level
     const targetZoom = Math.max(minZoom, Math.min(estimatedZoom, 4));
 
@@ -540,7 +540,7 @@ export function MapControl({
       coordinates: region.coordinates,
       zoom: Math.min(6, region.zoom),
     });
-    
+
     if (isMobile) {
       setIsRegionsOpen(false);
     }
@@ -601,11 +601,10 @@ export function MapControl({
       <div className="absolute inset-0 map-noise pointer-events-none" />
 
       {/* Earth Map View */}
-      <div 
-        ref={mapRef} 
-        className={`w-full h-full transition-all duration-500 ease-out ${
-          isSpaceOverlayOpen ? 'blur-sm saturate-50' : 'blur-0 saturate-100'
-        }`}
+      <div
+        ref={mapRef}
+        className={`w-full h-full transition-all duration-500 ease-out ${isSpaceOverlayOpen ? 'blur-sm saturate-50' : 'blur-0 saturate-100'
+          }`}
       >
         <ComposableMap
           width={mapWidth}
@@ -636,7 +635,7 @@ export function MapControl({
               {({ geographies }) =>
                 geographies.map((geo) => (
                   <Geography
-                   vectorEffect="non-scaling-stroke"
+                    vectorEffect="non-scaling-stroke"
                     key={geo.rsmKey}
                     geography={geo}
                     fill="#141e2d"
@@ -667,6 +666,106 @@ export function MapControl({
             </Geographies>
             {showRawPins
               ? sortedLocations.map((loc) => (
+                <Marker
+                  key={loc.id}
+                  coordinates={[loc.longitude, loc.latitude]}
+                >
+                  <g transform={`scale(${1 / livePosition.zoom})`}>
+                    <Pin
+                      category={loc.category}
+                      isSelected={effectiveSelectedId === loc.id}
+                      title={loc.name}
+                      onClick={() =>
+                        handleMarkerClick(loc.id, [
+                          loc.longitude,
+                          loc.latitude,
+                        ])
+                      }
+                      onFocus={() =>
+                        handlePinFocus([loc.longitude, loc.latitude])
+                      }
+                    />
+                  </g>
+                </Marker>
+              ))
+              : clusters.map((cluster) => {
+                const [lng, lat] = cluster.geometry.coordinates as [
+                  number,
+                  number
+                ];
+                const isCluster =
+                  "cluster" in cluster.properties &&
+                  cluster.properties.cluster;
+
+                if (isCluster) {
+                  const count = cluster.properties.point_count as number;
+                  const size = 18 + Math.min(16, Math.log(count) * 8);
+                  const clusterId = cluster.properties.cluster_id;
+                  if (clusterId === undefined) return null;
+                  return (
+                    <Marker
+                      key={`cluster-${clusterId}`}
+                      coordinates={[lng, lat]}
+                    >
+                      <g
+                        transform={`scale(${1 / livePosition.zoom})`}
+                        onClick={() =>
+                          handleClusterClick(clusterId, [lng, lat])
+                        }
+                        onFocus={() => handlePinFocus([lng, lat])}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            handleClusterClick(clusterId, [lng, lat]);
+                          }
+                        }}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Cluster of ${count} locations. Press Enter to zoom in and view individual locations.`}
+                        className="cursor-pointer focus:outline-none cluster-focusable"
+                        style={{ pointerEvents: "all" }}
+                      >
+                        <title>{`${count} locations - press Enter to zoom`}</title>
+                        {/* Focus ring - visible only on keyboard focus */}
+                        <circle
+                          r={size + 6}
+                          fill="none"
+                          stroke="rgba(91, 163, 220, 0.9)"
+                          strokeWidth={2}
+                          strokeDasharray="4 2"
+                          className="cluster-focus-ring"
+                        />
+                        <circle
+                          r={size}
+                          fill="rgba(91, 163, 220, 0.25)"
+                          stroke="rgba(91, 163, 220, 0.8)"
+                          strokeWidth={1.5}
+                        />
+                        <circle
+                          r={size * 0.6}
+                          fill="rgba(91, 163, 220, 0.35)"
+                        />
+                        <text
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          fill="white"
+                          fontSize={12}
+                          fontWeight={600}
+                        >
+                          {count}
+                        </text>
+                      </g>
+                    </Marker>
+                  );
+                }
+
+                const locationId = (
+                  cluster.properties as { locationId: number }
+                ).locationId;
+                const loc = locationsById.get(locationId);
+                if (!loc) return null;
+
+                return (
                   <Marker
                     key={loc.id}
                     coordinates={[loc.longitude, loc.latitude]}
@@ -688,108 +787,8 @@ export function MapControl({
                       />
                     </g>
                   </Marker>
-                ))
-              : clusters.map((cluster) => {
-                  const [lng, lat] = cluster.geometry.coordinates as [
-                    number,
-                    number
-                  ];
-                  const isCluster =
-                    "cluster" in cluster.properties &&
-                    cluster.properties.cluster;
-
-                  if (isCluster) {
-                    const count = cluster.properties.point_count as number;
-                    const size = 18 + Math.min(16, Math.log(count) * 8);
-                    const clusterId = cluster.properties.cluster_id;
-                    if (clusterId === undefined) return null;
-                    return (
-                      <Marker
-                        key={`cluster-${clusterId}`}
-                        coordinates={[lng, lat]}
-                      >
-                        <g
-                          transform={`scale(${1 / livePosition.zoom})`}
-                          onClick={() =>
-                            handleClusterClick(clusterId, [lng, lat])
-                          }
-                          onFocus={() => handlePinFocus([lng, lat])}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                              handleClusterClick(clusterId, [lng, lat]);
-                            }
-                          }}
-                          role="button"
-                          tabIndex={0}
-                          aria-label={`Cluster of ${count} locations. Press Enter to zoom in and view individual locations.`}
-                          className="cursor-pointer focus:outline-none cluster-focusable"
-                          style={{ pointerEvents: "all" }}
-                        >
-                          <title>{`${count} locations - press Enter to zoom`}</title>
-                          {/* Focus ring - visible only on keyboard focus */}
-                          <circle
-                            r={size + 6}
-                            fill="none"
-                            stroke="rgba(91, 163, 220, 0.9)"
-                            strokeWidth={2}
-                            strokeDasharray="4 2"
-                            className="cluster-focus-ring"
-                          />
-                          <circle
-                            r={size}
-                            fill="rgba(91, 163, 220, 0.25)"
-                            stroke="rgba(91, 163, 220, 0.8)"
-                            strokeWidth={1.5}
-                          />
-                          <circle
-                            r={size * 0.6}
-                            fill="rgba(91, 163, 220, 0.35)"
-                          />
-                          <text
-                            textAnchor="middle"
-                            dominantBaseline="central"
-                            fill="white"
-                            fontSize={12}
-                            fontWeight={600}
-                          >
-                            {count}
-                          </text>
-                        </g>
-                      </Marker>
-                    );
-                  }
-
-                  const locationId = (
-                    cluster.properties as { locationId: number }
-                  ).locationId;
-                  const loc = locationsById.get(locationId);
-                  if (!loc) return null;
-
-                  return (
-                    <Marker
-                      key={loc.id}
-                      coordinates={[loc.longitude, loc.latitude]}
-                    >
-                      <g transform={`scale(${1 / livePosition.zoom})`}>
-                        <Pin
-                          category={loc.category}
-                          isSelected={effectiveSelectedId === loc.id}
-                          title={loc.name}
-                          onClick={() =>
-                            handleMarkerClick(loc.id, [
-                              loc.longitude,
-                              loc.latitude,
-                            ])
-                          }
-                          onFocus={() =>
-                            handlePinFocus([loc.longitude, loc.latitude])
-                          }
-                        />
-                      </g>
-                    </Marker>
-                  );
-                })}
+                );
+              })}
           </ZoomableGroup>
         </ComposableMap>
       </div>
@@ -814,24 +813,21 @@ export function MapControl({
 
       {/* Search Bar - positioned below Space Ops button */}
       {!isSpaceOverlayOpen && (
-        <>
-          <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[90%] max-w-md sm:max-w-lg">
-            <SearchBar
-              ref={searchBarRef}
-              value={searchQuery}
-              onChange={setSearchQuery}
-              resultsCount={(searchQuery.trim() || selectedCategory) ? filteredLocations.length : undefined}
-            />
-          </div>
-          {/* Category Filter - positioned below search bar, always visible */}
-          <div className="absolute top-24 left-1/2 -translate-x-1/2 z-30 w-[90%] max-w-md sm:max-w-lg">
-            <CategoryFilter
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
-          </div>
-        </>
+
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-full w-[clamp(300px,_calc(100vw_-_2rem),_528px)]">
+          <SearchBar
+            ref={searchBarRef}
+            value={searchQuery}
+            onChange={setSearchQuery}
+            resultsCount={(searchQuery.trim() || selectedCategory) ? filteredLocations.length : undefined}
+          />
+
+          <CategoryFilter
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
+        </div>
       )}
 
       {hoveredRegion && !isSpaceOverlayOpen ? (
