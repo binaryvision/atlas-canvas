@@ -206,6 +206,33 @@ export const locations: Location[] = [
     imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
   },
   {
+    id: 19,
+    name: "Brussels, Belgium",
+    description: "Headquarters of NATO and EU institutions. Key hub for international security coordination and policing cooperation.",
+    latitude: 50.8503,
+    longitude: 4.3517,
+    category: "Protection and policing",
+    imageUrl: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 20,
+    name: "The Hague, Netherlands",
+    description: "International City of Peace and Justice. Hosts the International Court of Justice and Europol for cross-border policing.",
+    latitude: 52.0705,
+    longitude: 4.3007,
+    category: "Protection and policing",
+    imageUrl: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 21,
+    name: "Vienna, Austria",
+    description: "Host to UN Office on Drugs and Crime and OSCE. Central to international law enforcement and protection initiatives.",
+    latitude: 48.2082,
+    longitude: 16.3738,
+    category: "Protection and policing",
+    imageUrl: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80"
+  },
+  {
     id: 18,
     name: "Johannesburg, South Africa",
     description: "South Africa's largest city, a major economic hub with rich cultural history.",
