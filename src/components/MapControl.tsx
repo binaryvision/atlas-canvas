@@ -814,7 +814,7 @@ export function MapControl({
       {/* Search Bar - positioned below Space Ops button */}
       {!isSpaceOverlayOpen && (
 
-        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-full w-[clamp(300px,_calc(100vw_-_2rem),_528px)]">
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[clamp(300px,_calc(100vw_-_2rem),_528px)]">
           <SearchBar
             ref={searchBarRef}
             value={searchQuery}
