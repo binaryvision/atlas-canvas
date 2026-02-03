@@ -44,17 +44,24 @@ export function RegionMenu({
         >
           <div className={`flex flex-col gap-2 ${isMobile ? "pb-2" : "pt-4"}`}>
             {regions.map((region) => (
-              <button
-                key={region.id}
-                onClick={() => onSelect(region)}
-                className={`px-3 py-2 rounded-xl text-xs uppercase tracking-[0.25em] transition-colors border font-medium ${
-                  activeRegionId === region.id
-                    ? "bg-primary/25 border-primary/60 text-white"
-                    : "bg-white/5 border-primary/20 text-white/70 hover:text-white hover:bg-primary/15 hover:border-primary/40"
-                }`}
-              >
-                {region.label}
-              </button>
+              <div key={region.id} className="flex flex-col gap-2">
+                {region.id === "space" && (
+                  <div
+                    className="border-t border-primary/30 mt-2 pt-2"
+                    aria-hidden
+                  />
+                )}
+                <button
+                  onClick={() => onSelect(region)}
+                  className={`px-3 py-2 rounded-xl text-xs uppercase tracking-[0.25em] transition-colors border font-medium ${
+                    activeRegionId === region.id
+                      ? "bg-primary/25 border-primary/60 text-white"
+                      : "bg-white/5 border-primary/20 text-white/70 hover:text-white hover:bg-primary/15 hover:border-primary/40"
+                  }`}
+                >
+                  {region.label}
+                </button>
+              </div>
             ))}
           </div>
         </div>
