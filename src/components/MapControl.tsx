@@ -17,7 +17,7 @@ import { Pin } from "./Pin";
 import { RegionMenu } from "./map/RegionMenu";
 import { CategoryFilter } from "./map/CategoryFilter";
 import { SearchBar, type SearchBarHandle } from "./map/SearchBar";
-import { SpaceOverlay, SpaceTrigger } from "./map/SpaceView";
+import { SpaceOverlay } from "./map/SpaceView";
 import { ZoomControls } from "./map/ZoomControls";
 import { getMercatorBounds } from "./map/geo";
 import { useClusters } from "./map/useClusters";
@@ -403,6 +403,13 @@ export function MapControl({
         zoom: 2.6,
         bounds: [100, -50, 180, 0] as [number, number, number, number],
       },
+      {
+        id: "space",
+        label: "Space",
+        coordinates: [0, 20] as [number, number],
+        zoom: 1,
+        bounds: [200, 200, 200, 200] as [number, number, number, number], // non-geographic, never matches
+      },
     ],
     [defaultPosition]
   );
@@ -472,7 +479,7 @@ export function MapControl({
     if (zoom <= 1.3) return "world";
     const [lng, lat] = coordinates;
     const match = regions.find((region) => {
-      if (region.id === "world") return false;
+      if (region.id === "world" || region.id === "space") return false;
       const [minLng, minLat, maxLng, maxLat] = region.bounds;
       return lng >= minLng && lng <= maxLng && lat >= minLat && lat <= maxLat;
     });
@@ -535,6 +542,17 @@ export function MapControl({
     coordinates: [number, number];
     zoom: number;
   }) => {
+    if (region.id === "space") {
+      setActiveRegionId("space");
+      onLocationSelect(null);
+      if (!isSpaceOverlayOpen) setIsSpaceOverlayOpen(true);
+      if (isMobile) setIsRegionsOpen(false);
+      return;
+    }
+    if (isSpaceOverlayOpen) {
+      onSpaceOperationSelect?.(null);
+      setIsSpaceOverlayOpen(false);
+    }
     setActiveRegionId(region.id);
     animatePosition({
       coordinates: region.coordinates,
@@ -552,10 +570,14 @@ export function MapControl({
 
   const handleToggleSpaceOverlay = () => {
     if (isSpaceOverlayOpen) {
-      // Closing - clear selection
       onSpaceOperationSelect?.(null);
+      setActiveRegionId(
+        resolveRegionId(
+          [positionRef.current.x, positionRef.current.y],
+          positionRef.current.zoom
+        )
+      );
     } else {
-      // Opening - clear ground selection
       onLocationSelect(null);
     }
     setIsSpaceOverlayOpen(!isSpaceOverlayOpen);
@@ -804,17 +826,10 @@ export function MapControl({
         isMobile={isMobile}
       />
 
-      {/* Space Trigger - pull down tab at top */}
-      <SpaceTrigger
-        isActive={isSpaceOverlayOpen}
-        onToggle={handleToggleSpaceOverlay}
-        operationCount={spaceOperations.length}
-      />
-
-      {/* Search Bar - positioned below Space Ops button */}
+      {/* Search Bar */}
       {!isSpaceOverlayOpen && (
 
-        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[clamp(300px,_calc(100vw_-_2rem),_528px)]">
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[clamp(300px,_calc(100vw_-_2rem),_687px)]">
           <SearchBar
             ref={searchBarRef}
             value={searchQuery}
