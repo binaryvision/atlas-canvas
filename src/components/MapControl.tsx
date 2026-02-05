@@ -829,7 +829,7 @@ export function MapControl({
       {/* Search Bar */}
       {!isSpaceOverlayOpen && (
 
-        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[clamp(300px,_calc(100vw_-_2rem),_687px)]">
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[clamp(300px,_calc(100vw_-_2rem),_694px)]">
           <SearchBar
             ref={searchBarRef}
             value={searchQuery}
