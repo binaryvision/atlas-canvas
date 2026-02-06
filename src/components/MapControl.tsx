@@ -13,6 +13,7 @@ import {
   Marker,
   ZoomableGroup,
 } from "react-simple-maps";
+import { Satellite } from "lucide-react";
 import { Pin } from "./Pin";
 import { RegionMenu } from "./map/RegionMenu";
 import { CategoryFilter } from "./map/CategoryFilter";
@@ -591,6 +592,8 @@ export function MapControl({
     });
   };
 
+  const spaceRegion = regions.find((r) => r.id === "space");
+
   const regionMenu = (
     <RegionMenu
       regions={regions}
@@ -601,6 +604,24 @@ export function MapControl({
       onSelect={handleRegionSelect}
     />
   );
+
+  const spaceButton = spaceRegion ? (
+    <div className="bg-[#141e2d]/95 backdrop-blur-md border border-primary/30 rounded-2xl p-3 shadow-2xl shadow-black/50 w-full sm:w-auto">
+      <button
+        onClick={() => handleRegionSelect(spaceRegion)}
+        className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs uppercase tracking-[0.25em] transition-colors border font-medium ${
+          activeRegionId === spaceRegion.id
+            ? "bg-primary/25 border-primary/60 text-white"
+            : "bg-white/5 border-primary/20 text-white/70 hover:text-white hover:bg-primary/15 hover:border-primary/40"
+        }`}
+      >
+        <Satellite size={14} className="shrink-0" aria-hidden />
+        <span className="flex items-center gap-0.5">
+          {spaceRegion.label}
+        </span>
+      </button>
+    </div>
+  ) : null;
 
   const zoomControls = (
     <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
@@ -853,8 +874,9 @@ export function MapControl({
         </div>
       ) : null}
 
-      <div className={`absolute top-24 left-6 z-30 hidden sm:block transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`absolute top-24 left-6 z-30 hidden sm:flex sm:flex-col sm:gap-2 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         {regionMenu}
+        {spaceButton}
       </div>
 
       <div className={`absolute bottom-8 right-8 hidden sm:flex sm:flex-col sm:gap-4 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
@@ -862,7 +884,10 @@ export function MapControl({
       </div>
 
       <div className={`absolute bottom-6 left-4 right-4 z-30 flex items-end justify-end gap-3 sm:hidden transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-        <div className="w-full">{regionMenu}</div>
+        <div className="w-full flex flex-col gap-2">
+          {regionMenu}
+          {spaceButton}
+        </div>
         {zoomControls}
       </div>
     </div>
