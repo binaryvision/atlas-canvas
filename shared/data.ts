@@ -36,6 +36,7 @@ export interface Location {
   latitude: number;
   longitude: number;
   category: string;
+  locationType: "operation" | "exercise";
   imageUrl: string | null;
   expandedContent?: ExpandedContent;
 }
@@ -59,6 +60,7 @@ export const locations: Location[] = [
     latitude: 35.0116,
     longitude: 135.7681,
     category: "Training",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80"
   },
   {
@@ -68,6 +70,7 @@ export const locations: Location[] = [
     latitude: 36.3932,
     longitude: 25.4615,
     category: "Humanitarian aid",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&q=80"
   },
   {
@@ -77,6 +80,7 @@ export const locations: Location[] = [
     latitude: -13.1631,
     longitude: -72.5450,
     category: "QRA",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&q=80"
   },
   {
@@ -86,6 +90,7 @@ export const locations: Location[] = [
     latitude: 64.1466,
     longitude: -21.9426,
     category: "International partnerships",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&q=80"
   },
   {
@@ -95,6 +100,7 @@ export const locations: Location[] = [
     latitude: -33.9249,
     longitude: 18.4241,
     category: "Exercises",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80"
   },
   {
@@ -104,6 +110,7 @@ export const locations: Location[] = [
     latitude: 34.9855,
     longitude: 135.5703,
     category: "Humanitarian aid",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1505067216369-2e6a8aa7f099?auto=format&fit=crop&q=80"
   },
   {
@@ -113,6 +120,7 @@ export const locations: Location[] = [
     latitude: 35.1189,
     longitude: 135.9204,
     category: "Training",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1493997181344-712f2f19d87a?auto=format&fit=crop&q=80"
   },
   {
@@ -122,6 +130,7 @@ export const locations: Location[] = [
     latitude: 36.6084,
     longitude: 25.2357,
     category: "Exercises",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80"
   },
   {
@@ -131,6 +140,7 @@ export const locations: Location[] = [
     latitude: 36.5487,
     longitude: 25.6729,
     category: "Training",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80"
   },
   {
@@ -140,6 +150,7 @@ export const locations: Location[] = [
     latitude: -13.0508,
     longitude: -72.2159,
     category: "Exercises",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1459679749680-18aa1c6fe2a9?auto=format&fit=crop&q=80"
   },
   {
@@ -149,6 +160,7 @@ export const locations: Location[] = [
     latitude: -13.6124,
     longitude: -71.7345,
     category: "QRA",
+    locationType: "operation",
     imageUrl: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80"
   },
   {
@@ -158,6 +170,7 @@ export const locations: Location[] = [
     latitude: 64.5674,
     longitude: -22.2176,
     category: "International partnerships",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
   },
   {
@@ -167,6 +180,7 @@ export const locations: Location[] = [
     latitude: -33.7402,
     longitude: 19.0528,
     category: "Training",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80"
   },
   {
@@ -176,6 +190,7 @@ export const locations: Location[] = [
     latitude: 35.6764,
     longitude: 139.6500,
     category: "Exercises",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80"
   },
   {
@@ -185,6 +200,7 @@ export const locations: Location[] = [
     latitude: 37.9838,
     longitude: 23.7275,
     category: "QRA",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
   },
   {
@@ -194,6 +210,7 @@ export const locations: Location[] = [
     latitude: -12.0464,
     longitude: -77.0428,
     category: "Exercises",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
   },
   {
@@ -203,6 +220,7 @@ export const locations: Location[] = [
     latitude: 65.6835,
     longitude: -18.1105,
     category: "Humanitarian aid",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80"
   },
   {
@@ -212,6 +230,7 @@ export const locations: Location[] = [
     latitude: 50.8503,
     longitude: 4.3517,
     category: "Protection and policing",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80"
   },
   {
@@ -221,6 +240,7 @@ export const locations: Location[] = [
     latitude: 52.0705,
     longitude: 4.3007,
     category: "Protection and policing",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&q=80"
   },
   {
@@ -230,6 +250,7 @@ export const locations: Location[] = [
     latitude: 48.2082,
     longitude: 16.3738,
     category: "Protection and policing",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80"
   },
   {
@@ -239,6 +260,7 @@ export const locations: Location[] = [
     latitude: -26.2041,
     longitude: 28.0473,
     category: "Exercises",
+    locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80",
     expandedContent: {
       heroVideo: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?auto=format&fit=crop&q=80",

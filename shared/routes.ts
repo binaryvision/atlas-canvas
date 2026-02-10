@@ -8,6 +8,7 @@ const locationSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   category: z.string(),
+  locationType: z.enum(["operation", "exercise"]),
   imageUrl: z.string().nullable(),
 }) satisfies z.ZodType<Location>;
 

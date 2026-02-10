@@ -17,6 +17,7 @@ import { Satellite } from "lucide-react";
 import { Pin } from "./Pin";
 import { RegionMenu } from "./map/RegionMenu";
 import { CategoryFilter } from "./map/CategoryFilter";
+import { LayerVisibilityControl } from "./map/LayerVisibilityControl";
 import { SearchBar, type SearchBarHandle } from "./map/SearchBar";
 import { SpaceOverlay } from "./map/SpaceView";
 import { ZoomControls } from "./map/ZoomControls";
@@ -137,6 +138,9 @@ export function MapControl({
     return category && validCategories.includes(category) ? category : null;
   });
 
+  const [showOperations, setShowOperations] = useState(true);
+  const [showExercises, setShowExercises] = useState(true);
+
   // Update URL when search query or category changes
   useEffect(() => {
     const newSearchValue = searchQuery.trim();
@@ -196,9 +200,16 @@ export function MapControl({
     }
   }, [location, searchQuery, selectedCategory]);
 
-  // Filter locations based on search query and category
+  // Filter locations based on layer visibility, category, and search query
   const filteredLocations = useMemo(() => {
     let filtered = locations;
+
+    // Apply layer type visibility (Operations / Exercises)
+    filtered = filtered.filter(
+      (loc) =>
+        (loc.locationType === "operation" && showOperations) ||
+        (loc.locationType === "exercise" && showExercises)
+    );
 
     // Apply category filter
     if (selectedCategory) {
@@ -217,7 +228,7 @@ export function MapControl({
     }
 
     return filtered;
-  }, [locations, searchQuery, selectedCategory]);
+  }, [locations, showOperations, showExercises, searchQuery, selectedCategory]);
 
   const bounds = useMemo(
     () =>
@@ -715,6 +726,7 @@ export function MapControl({
                 >
                   <g transform={`scale(${1 / livePosition.zoom})`}>
                     <Pin
+                      variant={loc.locationType}
                       category={loc.category}
                       isSelected={effectiveSelectedId === loc.id}
                       title={loc.name}
@@ -815,6 +827,7 @@ export function MapControl({
                   >
                     <g transform={`scale(${1 / livePosition.zoom})`}>
                       <Pin
+                        variant={loc.locationType}
                         category={loc.category}
                         isSelected={effectiveSelectedId === loc.id}
                         title={loc.name}
@@ -877,6 +890,12 @@ export function MapControl({
       <div className={`absolute top-24 left-6 z-30 hidden sm:flex sm:flex-col sm:gap-2 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         {regionMenu}
         {spaceButton}
+        <LayerVisibilityControl
+          showOperations={showOperations}
+          showExercises={showExercises}
+          onShowOperationsChange={setShowOperations}
+          onShowExercisesChange={setShowExercises}
+        />
       </div>
 
       <div className={`absolute bottom-8 right-8 hidden sm:flex sm:flex-col sm:gap-4 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
@@ -887,6 +906,12 @@ export function MapControl({
         <div className="w-full flex flex-col gap-2">
           {regionMenu}
           {spaceButton}
+          <LayerVisibilityControl
+            showOperations={showOperations}
+            showExercises={showExercises}
+            onShowOperationsChange={setShowOperations}
+            onShowExercisesChange={setShowExercises}
+          />
         </div>
         {zoomControls}
       </div>
