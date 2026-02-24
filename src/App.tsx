@@ -1,3 +1,4 @@
+import { PrototypeBanner } from "@/components/PrototypeBanner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/Home";
@@ -16,6 +17,7 @@ function Router() {
 function App() {
   return (
     <TooltipProvider>
+      <PrototypeBanner />
       <Toaster />
       <Router />
     </TooltipProvider>
