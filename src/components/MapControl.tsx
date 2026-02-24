@@ -28,7 +28,8 @@ import { useMapSize } from "./map/useMapSize";
 
 gsap.registerPlugin(useGSAP);
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
+// Land-only topology: continents/coastlines with no country borders
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json";
 
 interface MapControlProps {
   onLocationSelect: (locationId: number | null) => void;
@@ -101,7 +102,6 @@ export function MapControl({
   const [activeRegionId, setActiveRegionId] = useState<string>("world");
   const [isRegionsOpen, setIsRegionsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
   const [pendingSelectionId, setPendingSelectionId] = useState<number | null>(
     null
   );
@@ -696,24 +696,7 @@ export function MapControl({
                     stroke="rgba(91, 127, 163, 0.5)"
                     strokeWidth={0.8}
                     tabIndex={-1}
-                    onMouseEnter={() => {
-                      const name =
-                        geo.properties?.NAME ||
-                        geo.properties?.name ||
-                        geo.properties?.ADMIN ||
-                        null;
-                      setHoveredRegion(name);
-                    }}
-                    onMouseLeave={() => setHoveredRegion(null)}
-                    style={{
-                      default: { outline: "none", opacity: 1 },
-                      hover: {
-                        outline: "none",
-                        opacity: 1,
-                        fill: "#1c2a3d",
-                        stroke: "rgba(91, 163, 220, 0.7)",
-                      },
-                    }}
+                    style={{ default: { outline: "none", opacity: 1 } }}
                   />
                 ))
               }
@@ -878,14 +861,6 @@ export function MapControl({
           />
         </div>
       )}
-
-      {hoveredRegion && !isSpaceOverlayOpen ? (
-        <div className="absolute top-6 left-6 z-30 hidden sm:block pointer-events-none">
-          <div className="rounded-full bg-[#141e2d]/90 border border-primary/40 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/90 font-medium">
-            {hoveredRegion}
-          </div>
-        </div>
-      ) : null}
 
       <div className={`absolute top-24 left-6 z-30 hidden sm:flex sm:flex-col sm:gap-2 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         {regionMenu}
