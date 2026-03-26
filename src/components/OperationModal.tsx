@@ -41,10 +41,12 @@ export function OperationModal({
   const heroContentRef = useRef<HTMLDivElement>(null);
   const overviewRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLElement>(null);
+  const aircraftRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLElement>(null);
   const teamRef = useRef<HTMLElement>(null);
   const galleryRef = useRef<HTMLElement>(null);
   const documentsRef = useRef<HTMLElement>(null);
+  const newsRef = useRef<HTMLElement>(null);
   const footerRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
@@ -223,6 +225,29 @@ export function OperationModal({
         );
       }
 
+      // Aircraft cards - reveal up
+      if (aircraftRef.current) {
+        const aircraftCards = aircraftRef.current.querySelectorAll(".aircraft-card");
+        gsap.fromTo(
+          aircraftCards,
+          { opacity: 0, y: 40, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: aircraftRef.current,
+              scroller,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
       // Timeline - draw in effect
       if (timelineRef.current) {
         const timelineItems = timelineRef.current.querySelectorAll(".timeline-item");
@@ -362,6 +387,28 @@ export function OperationModal({
         );
       }
 
+      // News cards - slide up
+      if (newsRef.current) {
+        const newsCards = newsRef.current.querySelectorAll(".news-card");
+        gsap.fromTo(
+          newsCards,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: newsRef.current,
+              scroller,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
       // Footer - fade in
       if (footerRef.current) {
         gsap.fromTo(
@@ -401,6 +448,12 @@ export function OperationModal({
   );
 
   if (!isVisible && !isOpen) return null;
+  const hasTimeline = content.timeline.length > 0;
+  const hasTeam = content.team.length > 0;
+  const hasDocuments = content.documents.length > 0;
+  const hasNews = Boolean(content.news?.length);
+  const hasAircraft = Boolean(content.aircraft?.length);
+  const hasMixedMedia = content.gallery.some((item) => item.type === "video") && content.gallery.some((item) => item.type === "image");
 
   const modalContent = (
     <FocusTrap
@@ -527,81 +580,163 @@ export function OperationModal({
               </div>
             </section>
 
-            {/* Two Column: Timeline + Team */}
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-              {/* Timeline */}
-              <section ref={timelineRef}>
-                <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
-                  <Calendar size={14} />
-                  Operation Timeline
+            {/* Aircraft */}
+            {hasAircraft && (
+              <section ref={aircraftRef}>
+                <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6">
+                  Aircraft
                 </h2>
-                <div className="space-y-4">
-                  {content.timeline.map((event, i) => (
-                    <div
+                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                  {content.aircraft?.map((aircraft, i) => (
+                    <a
                       key={i}
-                      className="timeline-item relative pl-6 pb-4 last:pb-0"
-                      style={{ opacity: 0, transform: "translateX(-40px)" }}
+                      href={aircraft.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="aircraft-card rounded-xl border border-primary/20 bg-primary/5 p-5 hover:border-primary/40 hover:bg-primary/10 transition-colors group"
+                      style={{ opacity: 0, transform: "translateY(40px) scale(0.95)" }}
                     >
-                      {/* Timeline line */}
-                      {i < content.timeline.length - 1 && (
-                        <div className="timeline-line absolute left-[7px] top-3 bottom-0 w-px bg-primary/30" style={{ transform: "scaleY(0)", transformOrigin: "top" }} />
-                      )}
-                      {/* Timeline dot */}
-                      <div className="timeline-dot absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2 border-primary bg-[#141e2d]" style={{ opacity: 0, transform: "scale(0)" }} />
-                      <div className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-1">
-                        {event.date}
+                      <div className="relative h-32 rounded-lg overflow-hidden border border-primary/20 mb-4">
+                        <img
+                          src={aircraft.imageUrl}
+                          alt={aircraft.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0e1621]/80 via-transparent to-transparent" />
                       </div>
-                      <div className="text-white font-medium mb-1">
-                        {event.title}
+                      <div className="text-white text-xl font-display font-semibold mb-2">
+                        {aircraft.name}
                       </div>
-                      <div className="text-white/60 text-sm leading-relaxed">
-                        {event.description}
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-3">
+                        {aircraft.role}
                       </div>
-                    </div>
+                      <p className="text-white/70 text-sm leading-relaxed mb-4">
+                        {aircraft.summary}
+                      </p>
+                      <div className="inline-flex items-center gap-2 text-primary text-xs uppercase tracking-[0.2em] font-semibold">
+                        Find Out More
+                        <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </a>
                   ))}
                 </div>
               </section>
+            )}
 
-              {/* Team */}
-              <section ref={teamRef}>
-                <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
-                  <Users size={14} />
-                  Field Team
-                </h2>
-                <div className="space-y-3">
-                  {content.team.map((member, i) => (
-                    <div
-                      key={i}
-                      className="team-card flex items-center gap-4 p-3 rounded-xl border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors"
-                      style={{ transformStyle: "preserve-3d", opacity: 0, transform: "translateX(60px) rotateY(-15deg)" }}
-                    >
-                      <img
-                        src={member.avatar}
-                        alt={member.name}
-                        className="w-12 h-12 rounded-full object-cover border border-primary/30"
-                      />
-                      <div>
-                        <div className="text-white font-medium">
-                          {member.name}
+            {/* Timeline and Team */}
+            {(hasTimeline || hasTeam) && (
+              <div className={hasTimeline && hasTeam ? "grid lg:grid-cols-2 gap-8 lg:gap-12" : "space-y-8"}>
+                {/* Timeline */}
+                {hasTimeline && (
+                  <section ref={timelineRef}>
+                    <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
+                      <Calendar size={14} />
+                      Operation Timeline
+                    </h2>
+                    <div className="space-y-4">
+                      {content.timeline.map((event, i) => (
+                        <div
+                          key={i}
+                          className="timeline-item relative pl-6 pb-4 last:pb-0"
+                          style={{ opacity: 0, transform: "translateX(-40px)" }}
+                        >
+                          {/* Timeline line */}
+                          {i < content.timeline.length - 1 && (
+                            <div className="timeline-line absolute left-[7px] top-3 bottom-0 w-px bg-primary/30" style={{ transform: "scaleY(0)", transformOrigin: "top" }} />
+                          )}
+                          {/* Timeline dot */}
+                          <div className="timeline-dot absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2 border-primary bg-[#141e2d]" style={{ opacity: 0, transform: "scale(0)" }} />
+                          <div className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-1">
+                            {event.date}
+                          </div>
+                          <div className="text-white font-medium mb-1">
+                            {event.title}
+                          </div>
+                          <div className="text-white/60 text-sm leading-relaxed">
+                            {event.description}
+                          </div>
                         </div>
-                        <div className="text-[10px] uppercase tracking-[0.2em] text-primary/70">
-                          {member.role}
-                        </div>
-                      </div>
-                      <ChevronRight
-                        size={16}
-                        className="ml-auto text-white/30"
-                      />
+                      ))}
                     </div>
+                  </section>
+                )}
+
+                {/* Team */}
+                {hasTeam && (
+                  <section ref={teamRef}>
+                    <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
+                      <Users size={14} />
+                      Who's Deployed and Roles
+                    </h2>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {content.team.map((member, i) => (
+                        <div
+                          key={i}
+                          className="team-card flex items-center gap-4 p-3 rounded-xl border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors"
+                          style={{ transformStyle: "preserve-3d", opacity: 0, transform: "translateX(60px) rotateY(-15deg)" }}
+                        >
+                          <img
+                            src={member.avatar}
+                            alt={member.name}
+                            className="w-12 h-12 rounded-full object-cover border border-primary/30"
+                          />
+                          <div>
+                            <div className="text-white font-medium">
+                              {member.name}
+                            </div>
+                            <div className="text-[10px] uppercase tracking-[0.2em] text-primary/70">
+                              {member.role}
+                            </div>
+                          </div>
+                          <ChevronRight
+                            size={16}
+                            className="ml-auto text-white/30"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </div>
+            )}
+
+            {/* Related News Carousel */}
+            {hasNews && (
+              <section ref={newsRef}>
+                <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
+                  <FileText size={14} />
+                  Related News
+                </h2>
+                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+                  {content.news?.map((item, i) => (
+                    <a
+                      key={i}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="news-card snap-start min-w-[280px] md:min-w-[340px] rounded-xl border border-primary/20 bg-primary/5 p-5 hover:border-primary/40 hover:bg-primary/10 transition-colors group"
+                      style={{ opacity: 0, transform: "translateY(30px)" }}
+                    >
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-primary/70 mb-2">
+                        {item.source}
+                      </div>
+                      <div className="text-white font-medium leading-relaxed mb-4">
+                        {item.title}
+                      </div>
+                      <div className="inline-flex items-center gap-2 text-accent text-xs uppercase tracking-[0.2em] font-semibold">
+                        Open Article
+                        <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </a>
                   ))}
                 </div>
               </section>
-            </div>
+            )}
 
             {/* Gallery */}
             <section ref={galleryRef}>
               <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6">
-                Intelligence Gallery
+                {hasMixedMedia ? "Other Media" : "Gallery"}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 {content.gallery.map((item, i) => (
@@ -634,37 +769,39 @@ export function OperationModal({
             </section>
 
             {/* Documents */}
-            <section ref={documentsRef}>
-              <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
-                <FileText size={14} />
-                Documents
-              </h2>
-              <div className="grid md:grid-cols-2 gap-3">
-                {content.documents.map((doc, i) => (
-                  <div
-                    key={i}
-                    className="doc-card flex items-center gap-4 p-4 rounded-xl border border-primary/20 bg-primary/5 hover:border-primary/40 hover:bg-primary/10 transition-colors cursor-pointer group"
-                    style={{ opacity: 0, transform: "translateY(40px) translateX(-20px)" }}
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                      <FileText size={20} className="text-accent" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-white font-medium truncate">
-                        {doc.title}
+            {hasDocuments && (
+              <section ref={documentsRef}>
+                <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
+                  <FileText size={14} />
+                  Documents
+                </h2>
+                <div className="grid md:grid-cols-2 gap-3">
+                  {content.documents.map((doc, i) => (
+                    <div
+                      key={i}
+                      className="doc-card flex items-center gap-4 p-4 rounded-xl border border-primary/20 bg-primary/5 hover:border-primary/40 hover:bg-primary/10 transition-colors cursor-pointer group"
+                      style={{ opacity: 0, transform: "translateY(40px) translateX(-20px)" }}
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                        <FileText size={20} className="text-accent" />
                       </div>
-                      <div className="text-[10px] uppercase tracking-[0.2em] text-white/50">
-                        {doc.type} • {doc.size}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-white font-medium truncate">
+                          {doc.title}
+                        </div>
+                        <div className="text-[10px] uppercase tracking-[0.2em] text-white/50">
+                          {doc.type} • {doc.size}
+                        </div>
                       </div>
+                      <ChevronRight
+                        size={16}
+                        className="text-white/30 group-hover:text-white/60 transition-colors"
+                      />
                     </div>
-                    <ChevronRight
-                      size={16}
-                      className="text-white/30 group-hover:text-white/60 transition-colors"
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Coordinates footer */}
             <section ref={footerRef} className="pt-8 mt-4 border-t border-primary/20" style={{ opacity: 0, transform: "translateY(30px)" }}>

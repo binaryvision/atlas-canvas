@@ -27,6 +27,18 @@ export interface ExpandedContent {
     type: string;
     size: string;
   }[];
+  aircraft?: {
+    name: string;
+    summary: string;
+    role: string;
+    link: string;
+    imageUrl: string;
+  }[];
+  news?: {
+    title: string;
+    url: string;
+    source: string;
+  }[];
 }
 
 export interface Location {
@@ -252,6 +264,99 @@ export const locations: Location[] = [
     category: "Protection and policing",
     locationType: "exercise",
     imageUrl: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 22,
+    name: "Exercise Red Flag",
+    description: "Exercise Red Flag is a multi-national air combat training exercise held annually in the United States, giving crews a realistic and demanding combat rehearsal.",
+    latitude: 36.2362,
+    longitude: -115.0337,
+    category: "Exercises",
+    locationType: "exercise",
+    imageUrl: "/vcops.jpg",
+    expandedContent: {
+      heroImage: "/vcops.jpg",
+      overview: "Exercise Red Flag is a multi-national air combat training exercise held at Nellis Air Force Base and the Nevada Test and Training Range. Established in 1975 after lessons from the Vietnam War, it was designed to expose aircrew to the intensity of their first combat sorties in a controlled environment. More than five decades later, Red Flag remains one of the most demanding training environments in the world, helping participating nations sharpen tactical integration, mission planning, and operational effectiveness.",
+      stats: [
+        { label: "Nevada Training Area", value: "2.9M acres", trend: "neutral" },
+        { label: "Controlled Airspace", value: "12,000 sq mi", trend: "neutral" },
+        { label: "Deployed Personnel", value: "3,000", trend: "up" },
+        { label: "Participating Units", value: "32", trend: "up" },
+        { label: "Core Partner Nations", value: "UK, US, AUS", trend: "neutral" }
+      ],
+      timeline: [],
+      gallery: [
+        {
+          type: "image",
+          url: "/vcops.jpg",
+          caption: "RAF detachment imagery from Exercise Red Flag activity"
+        },
+        {
+          type: "video",
+          url: "https://img.youtube.com/vi/5V79YdNyDYc/hqdefault.jpg",
+          caption: "Exercise Red Flag 2026: Meet the Pilots (YouTube)"
+        },
+        {
+          type: "video",
+          url: "https://img.youtube.com/vi/oFB_JiMDewg/hqdefault.jpg",
+          caption: "RAF on Exercise Red Flag 2025 (YouTube)"
+        },
+        {
+          type: "video",
+          url: "https://img.youtube.com/vi/kGL3c4NzBSw/hqdefault.jpg",
+          caption: "RAF 60 Second Update: Op Biloxi and Red Flag (YouTube)"
+        }
+      ],
+      team: [
+        { name: "RAF Lossiemouth", role: "Typhoon aircrew and engineering support", avatar: "/vcops.jpg" },
+        { name: "RAF Coningsby (XI(F) Squadron)", role: "Typhoon fighter squadron detachment", avatar: "/vcops.jpg" },
+        { name: "RAF Brize Norton (30 Squadron)", role: "A400M air mobility and support", avatar: "/vcops.jpg" },
+        { name: "51 Squadron", role: "Rivet Joint intelligence support crew", avatar: "/vcops.jpg" },
+        { name: "RAF Police", role: "Force protection and security", avatar: "/vcops.jpg" },
+        { name: "Air Command and Control Force", role: "Operations and battlespace coordination", avatar: "/vcops.jpg" },
+        { name: "90 Signals Unit", role: "Communications and network support", avatar: "/vcops.jpg" },
+        { name: "Deployed Roles", role: "Pilots, engineers, medics, logistics, media operations, and photographers", avatar: "/vcops.jpg" }
+      ],
+      documents: [],
+      aircraft: [
+        {
+          name: "Typhoon",
+          summary: "Primary combat aircraft in the detachment, focused on offensive and defensive counter-air missions in complex coalition scenarios.",
+          role: "Air superiority and strike",
+          link: "#",
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/RAF_Eurofighter_Typhoon.jpg"
+        },
+        {
+          name: "A400M",
+          summary: "Supports strategic and tactical air mobility, moving personnel, equipment, and sustainment packages into and out of theater.",
+          role: "Air mobility and logistics",
+          link: "#",
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Royal_Air_Force_Airbus_A400M_ZM400_in_flight_over_Bristol_(45158516).jpg"
+        },
+        {
+          name: "Voyager",
+          summary: "Provides air-to-air refuelling and transport support, extending range and endurance for sustained mission waves.",
+          role: "AAR and transport support",
+          link: "#",
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/RAF_Voyager_Aircraft_MOD_45156495.jpg"
+        },
+        {
+          name: "Rivet Joint",
+          summary: "Delivers airborne intelligence collection and mission support, helping crews build situational awareness in contested environments.",
+          role: "Airborne ISR and SIGINT",
+          link: "#",
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Boeing_RC-135V_Rivet_Joint_-_United_States_Air_Force_-_64-14843_(49618872293).jpg"
+        }
+      ],
+      news: [
+        { title: "Exercise Red Flag 2026 - Explained", source: "raf.mod.uk", url: "https://www.raf.mod.uk/news/articles/exercise-red-flag-2026-explained/" },
+        { title: "RAF Deploy to Nevada for Exercise Red Flag 2026", source: "raf.mod.uk", url: "https://www.raf.mod.uk/news/articles/raf-deploy-to-nevada-for-exercise-red-flag-2026/" },
+        { title: "From Exercise Red Flag to Exercise Bamboo Eagle", source: "raf.mod.uk", url: "https://www.raf.mod.uk/news/articles/from-exercise-red-flag-to-exercise-bamboo-eagle/" },
+        { title: "RAF 60 second update Ep 56", source: "raf.mod.uk", url: "https://www.raf.mod.uk/news/articles/raf-60-second-update-56/" },
+        { title: "Exercise Red Flag 2025 begins", source: "raf.mod.uk", url: "https://www.raf.mod.uk/news/articles/exercise-red-flag-2025-begins/" },
+        { title: "RAF complete Exercise Red Flag 24", source: "raf.mod.uk", url: "https://www.raf.mod.uk/news/articles/exercise-red-flag-finishes-for-another-year/" }
+      ]
+    }
   },
   {
     id: 18,
