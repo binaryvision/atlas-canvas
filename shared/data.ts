@@ -34,7 +34,11 @@ export interface ExpandedContent {
     link: string;
     imageUrl: string;
   }[];
-  roles?: string[];
+  roles?: {
+    name: string;
+    imageUrl: string;
+    link: string;
+  }[];
   news?: {
     title: string;
     url: string;
@@ -309,31 +313,60 @@ export const locations: Location[] = [
         }
       ],
       team: [
-        { name: "RAF Lossiemouth", role: "Typhoon aircrew and engineering support", avatar: "/vcops.jpg" },
-        { name: "RAF Coningsby (XI(F) Squadron)", role: "Typhoon fighter squadron detachment", avatar: "/vcops.jpg" },
-        { name: "RAF Brize Norton (30 Squadron)", role: "A400M air mobility and support", avatar: "/vcops.jpg" },
-        { name: "51 Squadron", role: "Rivet Joint intelligence support crew", avatar: "/vcops.jpg" },
-        { name: "RAF Police", role: "Force protection and security", avatar: "/vcops.jpg" },
-        { name: "Air Command and Control Force", role: "Operations and battlespace coordination", avatar: "/vcops.jpg" },
-        { name: "90 Signals Unit", role: "Communications and network support", avatar: "/vcops.jpg" }
+        { name: "RAF Lossiemouth", role: "Typhoon aircrew and engineering support", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" },
+        { name: "RAF Coningsby (XI(F) Squadron)", role: "Typhoon fighter squadron detachment", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" },
+        { name: "RAF Brize Norton (30 Squadron)", role: "A400M air mobility and support", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" },
+        { name: "51 Squadron", role: "Rivet Joint intelligence support crew", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" },
+        { name: "RAF Police", role: "Force protection and security", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" },
+        { name: "Air Command and Control Force", role: "Operations and battlespace coordination", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" },
+        { name: "90 Signals Unit", role: "Communications and network support", avatar: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg" }
       ],
       roles: [
-        "Pilot",
-        "Engineer Officer (Aerosystems)",
-        "Aircraft Technician Weapons",
-        "Aircraft Technician Avionics",
-        "Aircraft Technician Mechanical",
-        "RAF Police",
-        "RAF Medic",
-        "Weapon Systems Operator",
-        "Weapon Systems Officer",
-        "Operations Officer",
-        "Air Ground Steward",
-        "Logistics Officer",
-        "Media Operations Officer",
-        "Media Operations Specialist",
-        "Photographer",
-        "People Operations Officer"
+        {
+          name: "Pilot",
+          imageUrl: "https://www.raf.mod.uk/sites/raf-beta/cache/file/AA372274-0116-4581-92B85ACCFA2D875D_400x400.jpg",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Aircraft Technician (Mechanical)",
+          imageUrl: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "People Operations Officer",
+          imageUrl: "https://images.unsplash.com/photo-1573496774426-fe3db3dd1731?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Media Operations Officer",
+          imageUrl: "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Personnel Operations Officer",
+          imageUrl: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Engineer Officer (Communications Electronics)",
+          imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Weapon Systems Operator",
+          imageUrl: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Weapon Systems Officer",
+          imageUrl: "https://images.unsplash.com/photo-1544531585-9847b68c8c86?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        },
+        {
+          name: "Weapon Technician",
+          imageUrl: "https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?auto=format&fit=crop&crop=faces&w=240&h=240&q=80",
+          link: "https://recruitment.raf.mod.uk/roles"
+        }
       ],
       documents: [],
       aircraft: [
@@ -342,28 +375,28 @@ export const locations: Location[] = [
           summary: "Primary combat aircraft in the detachment, focused on offensive and defensive counter-air missions in complex coalition scenarios.",
           role: "Air superiority and strike",
           link: "#",
-          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/RAF_Eurofighter_Typhoon.jpg"
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/RAF_Eurofighter_Typhoon.jpg?width=900"
         },
         {
           name: "A400M",
           summary: "Supports strategic and tactical air mobility, moving personnel, equipment, and sustainment packages into and out of theater.",
           role: "Air mobility and logistics",
           link: "#",
-          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Royal_Air_Force_Airbus_A400M_ZM400_in_flight_over_Bristol_(45158516).jpg"
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Royal_Air_Force_Airbus_A400M_ZM400_in_flight_over_Bristol_(45158516).jpg?width=900"
         },
         {
           name: "Voyager",
           summary: "Provides air-to-air refuelling and transport support, extending range and endurance for sustained mission waves.",
           role: "AAR and transport support",
           link: "#",
-          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/RAF_Voyager_Aircraft_MOD_45156495.jpg"
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/RAF_Voyager_Aircraft_MOD_45156495.jpg?width=900"
         },
         {
           name: "Rivet Joint",
           summary: "Delivers airborne intelligence collection and mission support, helping crews build situational awareness in contested environments.",
           role: "Airborne ISR and SIGINT",
           link: "#",
-          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Boeing_RC-135V_Rivet_Joint_-_United_States_Air_Force_-_64-14843_(49618872293).jpg"
+          imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Boeing_RC-135V_Rivet_Joint_-_United_States_Air_Force_-_64-14843_(49618872293).jpg?width=900"
         }
       ],
       news: [

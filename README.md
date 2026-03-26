@@ -1,4 +1,5 @@
 TODO
 
 - Remove borders fromn countries, just continents
-- Add a real operation for proper accuracy. Enquire about what should should be used and what content.
+- Make roles section similar to the roles section on RAF site - https://www.raf.mod.uk/aircraft/current-aircraft/typhoon-fgr41/
+- Have Giullia take a look before monday for brief testing
