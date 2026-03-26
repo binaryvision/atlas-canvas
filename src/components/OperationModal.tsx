@@ -453,6 +453,7 @@ export function OperationModal({
   const hasDocuments = content.documents.length > 0;
   const hasNews = Boolean(content.news?.length);
   const hasAircraft = Boolean(content.aircraft?.length);
+  const hasRoles = Boolean(content.roles?.length);
   const hasMixedMedia = content.gallery.some((item) => item.type === "video") && content.gallery.some((item) => item.type === "image");
 
   const modalContent = (
@@ -623,83 +624,6 @@ export function OperationModal({
               </section>
             )}
 
-            {/* Timeline and Team */}
-            {(hasTimeline || hasTeam) && (
-              <div className={hasTimeline && hasTeam ? "grid lg:grid-cols-2 gap-8 lg:gap-12" : "space-y-8"}>
-                {/* Timeline */}
-                {hasTimeline && (
-                  <section ref={timelineRef}>
-                    <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
-                      <Calendar size={14} />
-                      Operation Timeline
-                    </h2>
-                    <div className="space-y-4">
-                      {content.timeline.map((event, i) => (
-                        <div
-                          key={i}
-                          className="timeline-item relative pl-6 pb-4 last:pb-0"
-                          style={{ opacity: 0, transform: "translateX(-40px)" }}
-                        >
-                          {/* Timeline line */}
-                          {i < content.timeline.length - 1 && (
-                            <div className="timeline-line absolute left-[7px] top-3 bottom-0 w-px bg-primary/30" style={{ transform: "scaleY(0)", transformOrigin: "top" }} />
-                          )}
-                          {/* Timeline dot */}
-                          <div className="timeline-dot absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2 border-primary bg-[#141e2d]" style={{ opacity: 0, transform: "scale(0)" }} />
-                          <div className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-1">
-                            {event.date}
-                          </div>
-                          <div className="text-white font-medium mb-1">
-                            {event.title}
-                          </div>
-                          <div className="text-white/60 text-sm leading-relaxed">
-                            {event.description}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                {/* Team */}
-                {hasTeam && (
-                  <section ref={teamRef}>
-                    <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
-                      <Users size={14} />
-                      Who's Deployed and Roles
-                    </h2>
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {content.team.map((member, i) => (
-                        <div
-                          key={i}
-                          className="team-card flex items-center gap-4 p-3 rounded-xl border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors"
-                          style={{ transformStyle: "preserve-3d", opacity: 0, transform: "translateX(60px) rotateY(-15deg)" }}
-                        >
-                          <img
-                            src={member.avatar}
-                            alt={member.name}
-                            className="w-12 h-12 rounded-full object-cover border border-primary/30"
-                          />
-                          <div>
-                            <div className="text-white font-medium">
-                              {member.name}
-                            </div>
-                            <div className="text-[10px] uppercase tracking-[0.2em] text-primary/70">
-                              {member.role}
-                            </div>
-                          </div>
-                          <ChevronRight
-                            size={16}
-                            className="ml-auto text-white/30"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-              </div>
-            )}
-
             {/* Related News Carousel */}
             {hasNews && (
               <section ref={newsRef}>
@@ -767,6 +691,110 @@ export function OperationModal({
                 ))}
               </div>
             </section>
+
+            {/* Timeline and Team */}
+            {(hasTimeline || hasTeam || hasRoles) && (
+              <div className={hasTimeline && hasTeam ? "grid lg:grid-cols-2 gap-8 lg:gap-12" : "space-y-8"}>
+                {/* Timeline */}
+                {hasTimeline && (
+                  <section ref={timelineRef}>
+                    <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
+                      <Calendar size={14} />
+                      Operation Timeline
+                    </h2>
+                    <div className="space-y-4">
+                      {content.timeline.map((event, i) => (
+                        <div
+                          key={i}
+                          className="timeline-item relative pl-6 pb-4 last:pb-0"
+                          style={{ opacity: 0, transform: "translateX(-40px)" }}
+                        >
+                          {/* Timeline line */}
+                          {i < content.timeline.length - 1 && (
+                            <div className="timeline-line absolute left-[7px] top-3 bottom-0 w-px bg-primary/30" style={{ transform: "scaleY(0)", transformOrigin: "top" }} />
+                          )}
+                          {/* Timeline dot */}
+                          <div className="timeline-dot absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2 border-primary bg-[#141e2d]" style={{ opacity: 0, transform: "scale(0)" }} />
+                          <div className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-1">
+                            {event.date}
+                          </div>
+                          <div className="text-white font-medium mb-1">
+                            {event.title}
+                          </div>
+                          <div className="text-white/60 text-sm leading-relaxed">
+                            {event.description}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Team and Roles */}
+                {(hasTeam || hasRoles) && (
+                  <section ref={teamRef}>
+                    <h2 className="text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-6 flex items-center gap-2">
+                      <Users size={14} />
+                      Deployment Details
+                    </h2>
+                    <div className="grid lg:grid-cols-2 gap-6">
+                      {hasTeam && (
+                        <div>
+                          <h3 className="text-xs uppercase tracking-[0.25em] text-primary/70 mb-3">
+                            Who's Deployed
+                          </h3>
+                          <div className="space-y-3">
+                            {content.team.map((member, i) => (
+                              <div
+                                key={i}
+                                className="team-card flex items-center gap-4 p-3 rounded-xl border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors"
+                                style={{ transformStyle: "preserve-3d", opacity: 0, transform: "translateX(60px) rotateY(-15deg)" }}
+                              >
+                                <img
+                                  src={member.avatar}
+                                  alt={member.name}
+                                  className="w-12 h-12 rounded-full object-cover border border-primary/30"
+                                />
+                                <div>
+                                  <div className="text-white font-medium">
+                                    {member.name}
+                                  </div>
+                                  <div className="text-[10px] uppercase tracking-[0.2em] text-primary/70">
+                                    {member.role}
+                                  </div>
+                                </div>
+                                <ChevronRight
+                                  size={16}
+                                  className="ml-auto text-white/30"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {hasRoles && (
+                        <div>
+                          <h3 className="text-xs uppercase tracking-[0.25em] text-primary/70 mb-3">
+                            Roles
+                          </h3>
+                          <div className="grid sm:grid-cols-2 gap-3">
+                            {content.roles?.map((role, i) => (
+                              <div
+                                key={i}
+                                className="team-card rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-white/85 hover:border-primary/40 transition-colors"
+                                style={{ transformStyle: "preserve-3d", opacity: 0, transform: "translateX(60px) rotateY(-15deg)" }}
+                              >
+                                {role}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                )}
+              </div>
+            )}
 
             {/* Documents */}
             {hasDocuments && (

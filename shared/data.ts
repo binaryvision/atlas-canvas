@@ -34,6 +34,7 @@ export interface ExpandedContent {
     link: string;
     imageUrl: string;
   }[];
+  roles?: string[];
   news?: {
     title: string;
     url: string;
@@ -314,8 +315,25 @@ export const locations: Location[] = [
         { name: "51 Squadron", role: "Rivet Joint intelligence support crew", avatar: "/vcops.jpg" },
         { name: "RAF Police", role: "Force protection and security", avatar: "/vcops.jpg" },
         { name: "Air Command and Control Force", role: "Operations and battlespace coordination", avatar: "/vcops.jpg" },
-        { name: "90 Signals Unit", role: "Communications and network support", avatar: "/vcops.jpg" },
-        { name: "Deployed Roles", role: "Pilots, engineers, medics, logistics, media operations, and photographers", avatar: "/vcops.jpg" }
+        { name: "90 Signals Unit", role: "Communications and network support", avatar: "/vcops.jpg" }
+      ],
+      roles: [
+        "Pilot",
+        "Engineer Officer (Aerosystems)",
+        "Aircraft Technician Weapons",
+        "Aircraft Technician Avionics",
+        "Aircraft Technician Mechanical",
+        "RAF Police",
+        "RAF Medic",
+        "Weapon Systems Operator",
+        "Weapon Systems Officer",
+        "Operations Officer",
+        "Air Ground Steward",
+        "Logistics Officer",
+        "Media Operations Officer",
+        "Media Operations Specialist",
+        "Photographer",
+        "People Operations Officer"
       ],
       documents: [],
       aircraft: [
