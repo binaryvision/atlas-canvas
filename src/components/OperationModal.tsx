@@ -533,8 +533,8 @@ export function OperationModal({
                     <p className="text-white/70 text-sm leading-relaxed mb-4">
                       {aircraft.summary}
                     </p>
-                    <div className="inline-flex items-center gap-2 text-primary text-xs uppercase tracking-[0.2em] font-semibold">
-                      Find Out More
+                      <div className="inline-flex items-center gap-2 text-primary text-xs uppercase tracking-[0.2em] font-semibold">
+                        {`About ${aircraft.name}`}
                       <ChevronRight
                         size={14}
                         className="group-hover:translate-x-1 transition-transform"
@@ -653,8 +653,8 @@ export function OperationModal({
                     <div className="text-center text-white/90 text-sm md:text-base font-medium leading-snug">
                       {role.name}
                     </div>
-                    <div className="mt-3 inline-flex w-full items-center justify-center gap-1 text-[10px] uppercase tracking-[0.2em] text-primary/80 group-hover:text-primary transition-colors">
-                      Find out more
+                      <div className="mt-3 inline-flex w-full items-center justify-center gap-1 text-[10px] uppercase tracking-[0.2em] text-primary/80 group-hover:text-primary transition-colors">
+                        {`More on ${role.name.replace(/\s*\([^)]*\)\s*/g, " ").replace(/\s+/g, " ").trim().toLowerCase()} roles`}
                       <ChevronRight
                         size={12}
                         className="group-hover:translate-x-0.5 transition-transform"
