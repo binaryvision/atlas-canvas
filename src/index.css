@@ -41,6 +41,10 @@
 }
 
 @layer base {
+  html, body, #root {
+    @apply overflow-x-hidden max-w-full;
+  }
+
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground;
     font-family: var(--font-body);

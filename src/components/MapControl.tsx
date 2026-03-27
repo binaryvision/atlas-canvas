@@ -143,7 +143,9 @@ export function MapControl({
 
   // Update URL when search query or category changes
   useEffect(() => {
-    const newSearchValue = searchQuery.trim();
+    // Preserve user-entered whitespace while typing (e.g. "red flag")
+    // so the input does not collapse spaces via URL sync feedback.
+    const newSearchValue = searchQuery;
     const currentUrlSearch = getSearchFromUrl();
     const currentUrlCategory = getCategoryFromUrl();
 
