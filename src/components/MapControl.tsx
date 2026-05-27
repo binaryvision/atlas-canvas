@@ -106,6 +106,8 @@ export function MapControl({
     null
   );
   const [isSpaceOverlayOpen, setIsSpaceOverlayOpen] = useState(false);
+  const isSpaceOverlayEnabled = false;
+  const isSpaceOverlayActive = isSpaceOverlayEnabled && isSpaceOverlayOpen;
   const [location, setLocation] = useLocation();
   const expectedSearchRef = useRef<string | null>(null);
   const searchBarRef = useRef<SearchBarHandle>(null);
@@ -296,7 +298,7 @@ export function MapControl({
       // Cmd/Ctrl + K to focus search
       if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
-        if (!isSpaceOverlayOpen) {
+        if (!isSpaceOverlayActive) {
           searchBarRef.current?.focus();
         }
       }
@@ -304,7 +306,7 @@ export function MapControl({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isSpaceOverlayOpen]);
+  }, [isSpaceOverlayActive]);
 
   const spaceOperations = useSpaceOperations();
 
@@ -557,6 +559,10 @@ export function MapControl({
     zoom: number;
   }) => {
     if (region.id === "space") {
+      if (!isSpaceOverlayEnabled) {
+        if (isMobile) setIsRegionsOpen(false);
+        return;
+      }
       setActiveRegionId("space");
       onLocationSelect(null);
       if (!isSpaceOverlayOpen) setIsSpaceOverlayOpen(true);
@@ -583,6 +589,7 @@ export function MapControl({
   };
 
   const handleToggleSpaceOverlay = () => {
+    if (!isSpaceOverlayEnabled) return;
     if (isSpaceOverlayOpen) {
       onSpaceOperationSelect?.(null);
       setActiveRegionId(
@@ -621,8 +628,9 @@ export function MapControl({
   const spaceButton = spaceRegion ? (
     <div className="bg-[#141e2d]/95 backdrop-blur-md border border-primary/30 rounded-2xl p-3 shadow-2xl shadow-black/50 w-full sm:w-auto">
       <button
+        disabled={!isSpaceOverlayEnabled}
         onClick={() => handleRegionSelect(spaceRegion)}
-        className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs uppercase tracking-[0.25em] transition-colors border font-medium ${
+        className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs uppercase tracking-[0.25em] transition-colors border font-medium disabled:cursor-not-allowed disabled:opacity-45 disabled:text-white/40 disabled:bg-white/5 disabled:border-primary/20 ${
           activeRegionId === spaceRegion.id
             ? "bg-primary/25 border-primary/60 text-white"
             : "bg-white/5 border-primary/20 text-white/70 hover:text-white hover:bg-primary/15 hover:border-primary/40"
@@ -659,7 +667,7 @@ export function MapControl({
       {/* Earth Map View */}
       <div
         ref={mapRef}
-        className={`w-full h-full transition-all duration-500 ease-out ${isSpaceOverlayOpen ? 'blur-sm saturate-50' : 'blur-0 saturate-100'
+        className={`w-full h-full transition-all duration-500 ease-out ${isSpaceOverlayActive ? 'blur-sm saturate-50' : 'blur-0 saturate-100'
           }`}
       >
         <ComposableMap
@@ -836,7 +844,7 @@ export function MapControl({
 
       {/* Space Overlay */}
       <SpaceOverlay
-        isActive={isSpaceOverlayOpen}
+        isActive={isSpaceOverlayActive}
         selectedOperationId={selectedSpaceOperationId ?? null}
         onOperationSelect={handleSpaceOperationClick}
         onClose={handleToggleSpaceOverlay}
@@ -846,7 +854,7 @@ export function MapControl({
       />
 
       {/* Search Bar */}
-      {!isSpaceOverlayOpen && (
+      {!isSpaceOverlayActive && (
 
         <div className="absolute top-14 left-1/2 -translate-x-1/2 z-30 w-[clamp(300px,_calc(100vw_-_2rem),_694px)]">
           <SearchBar
@@ -864,7 +872,7 @@ export function MapControl({
         </div>
       )}
 
-      <div className={`absolute top-24 left-6 z-30 hidden sm:flex sm:flex-col sm:gap-2 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`absolute top-24 left-6 z-30 hidden sm:flex sm:flex-col sm:gap-2 transition-opacity duration-300 ${isSpaceOverlayActive ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         {regionMenu}
         {spaceButton}
         <LayerVisibilityControl
@@ -875,11 +883,11 @@ export function MapControl({
         />
       </div>
 
-      <div className={`absolute bottom-8 right-8 hidden sm:flex sm:flex-col sm:gap-4 transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`absolute bottom-8 right-8 hidden sm:flex sm:flex-col sm:gap-4 transition-opacity duration-300 ${isSpaceOverlayActive ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         {zoomControls}
       </div>
 
-      <div className={`absolute bottom-6 left-4 right-4 z-30 flex items-end justify-end gap-3 sm:hidden transition-opacity duration-300 ${isSpaceOverlayOpen ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`absolute bottom-6 left-4 right-4 z-30 flex items-end justify-end gap-3 sm:hidden transition-opacity duration-300 ${isSpaceOverlayActive ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         <div className="w-full flex flex-col gap-2">
           {regionMenu}
           {spaceButton}
